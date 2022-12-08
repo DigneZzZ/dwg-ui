@@ -35,6 +35,9 @@ The unencrypted 1.1.1.1 is fine if you're sure the connection between your AGH i
 ## All DNS Servers
 https://adguard-dns.io/kb/general/dns-providers/#cloudflare-dns
 
+DNS Perfomance list:
+https://www.dnsperf.com/#!dns-resolvers
+
 
 
 ## What is DNS Leak?
