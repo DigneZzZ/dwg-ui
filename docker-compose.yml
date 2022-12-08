@@ -1,24 +1,49 @@
-version: "3.8"
+version: "3"
 services:
-  wg-easy:
-    environment:
-      # Change the server's hostname (clients will connect to):
-      - WG_HOST=your.ip   ### <---CHANGE
 
-      # Change the Web UI Password:
+networks:
+  private_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.2.0.0/24
+
+services:
+
+  unbound:
+    image: "mvance/unbound:latest"
+    container_name: unbound
+    restart: unless-stopped
+    hostname: "unbound"
+    volumes:
+      - "./unbound:/opt/unbound/etc/unbound/"
+
+    networks:
+      private_network:
+        ipv4_address: 10.2.0.200
+        
+        
+  wg-easy:
+    depends_on: [unbound, adguardhome]
+    environment:
+      # ⚠️ Required:
+      # Change this to your host's public address
+      - WG_HOST=my.ddns.net   #### <----CHANGE TO YOUR IP-Address
+
       # Optional:
-      - PASSWORD=password123 ### <---CHANGE
+      - PASSWORD=10h30 ####<----CHANGE TO YOU
       - WG_PORT=51820
-      - WG_DEFAULT_ADDRESS=10.8.1.x
-      - WG_DEFAULT_DNS=10.8.2.3
-      - WG_MTU=1398
+      - WG_DEFAULT_ADDRESS=10.6.0.x
+      - WG_DEFAULT_DNS=10.2.0.100
+      # - WG_ALLOWED_IPS=192.168.15.0/24, 10.0.1.0/24
+
     image: weejewel/wg-easy
     container_name: wg-easy
     volumes:
       - .:/etc/wireguard
     ports:
       - "51820:51820/udp"
-      - "51821:51821/tcp" # webinterface
+      - "51821:51821/tcp"
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
@@ -26,32 +51,28 @@ services:
     sysctls:
       - net.ipv4.ip_forward=1
       - net.ipv4.conf.all.src_valid_mark=1
+    dns:
+      - 10.2.0.100 # Points to adguard
+      - 10.2.0.200 # Points to unbound
+
+    restart: unless-stopped
     networks:
-      wg-easy:
-        ipv4_address: 10.8.2.2
+      private_network:
+        ipv4_address: 10.2.0.3
+
+
+
   adguardhome:
+    depends_on: [unbound]
     image: adguard/adguardhome
     container_name: adguardhome
-    # For DHCP it is recommended to remove these ports and instead add: network_mode: "host"
-    restart: always
-    ports:
-      # DNS Ports
-      - "54:53/tcp"
-      - "54:53/udp"
-      # Dashboard
-      - "3000:3000/tcp"
+    restart: unless-stopped
     environment:
-      TZ: ${TZ}
+      - TZ=America/Los_Angeles
     volumes:
       - ./work:/opt/adguardhome/work
       - ./conf:/opt/adguardhome/conf
-    networks:
-      wg-easy:
-        ipv4_address: 10.8.2.3
 
-networks:
-  wg-easy:
-    name: wg-easy
-    ipam:
-      config:
-        - subnet: 10.8.2.0/24
+    networks:
+      private_network:
+        ipv4_address: 10.2.0.100
