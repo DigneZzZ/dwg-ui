@@ -9,10 +9,11 @@ Here is the start of combination
 These confinguration of AdGuard include DNS-over-HTTPS (DoH) via Cloudflare service by using DNS: https://cloudflare-dns.com/dns-query
 Fow query to CF-DNS using Unbound. This is some type of DNS forwarding.
 
+# Quick Install
+
 ```bash
 git clone https://github.com/dignezzz/ad-wireguard.git
-cd ad-wireguard
-nano docker-compose.yml
+cd ad-wireguard && nano docker-compose.yml
 
 #then run
 docker-compose up -d
