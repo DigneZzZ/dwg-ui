@@ -37,7 +37,7 @@ services:
       - WG_DEFAULT_DNS=10.2.0.100
       # - WG_ALLOWED_IPS=192.168.15.0/24, 10.0.1.0/24
 
-    image: weejewel/wg-easy
+    image: ditek/wg-easy
     container_name: wg-easy
     volumes:
       - .:/etc/wireguard
