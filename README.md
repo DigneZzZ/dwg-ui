@@ -44,6 +44,41 @@ Go to: http://10.2.0.100/
 <b>Login:</b> <u>admin</u> <br />
 <b>Password:</b> <u>12345678</u>
 
+## ATTENTION! Change admin username and/or password
+### First way:
+1. On the server:
+```bash
+sudo apt install apache2-utils 
+htpasswd -nbB admin 'MyNewPassword'
+```
+
+2. Open ur configuration file of AGH:
+```bash
+nano ../ad-wireguard/conf/AdGuardHome.yaml
+```
+3. Change for NEW Name and Password:
+```bash
+users:
+  - name: admin
+    password: $2y$10$G7Qu8Y3szepMfaRUyQ.FmuKR.n4U9dHOQm.GgrIMuYC9UP8vmHJri
+```
+### Second way:
+1. Go to site: https://hostingcanada.org/htpasswd-generator/
+2. Change Mode: **bcrypt**
+3. Enter new Username and Password
+4. Open ur configuration file of AGH:
+```bash
+nano ../ad-wireguard/conf/AdGuardHome.yaml
+```
+5. Change Name and Password:
+```bash
+users:
+  - name: admin
+    password: $2y$10$G7Qu8Y3szepMfaRUyQ.FmuKR.n4U9dHOQm.GgrIMuYC9UP8vmHJri
+```
+
+Full information from AGH site: https://docs.cloudron.io/apps/adguard-home/
+
 # Adlists:
 ## RU-Adlist
 https://easylist-downloads.adblockplus.org/advblock.txt
