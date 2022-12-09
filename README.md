@@ -18,7 +18,7 @@ Recomendation VPS Hosting with 10% Discount: 	[VDSina.ru](https://vdsina.ru/?par
 * Site: [OpeNode.RU](https://openode.ru)
 
 👤 ** Dmitriy **
-* Git [Nuborg](https://github.com/nubortg)
+* Git [Nubortg](https://github.com/nubortg)
 
 
 ## Wireguard-Easy Web-UI
