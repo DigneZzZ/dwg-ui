@@ -36,12 +36,13 @@ https://easylist-downloads.adblockplus.org/cntblock.txt
 https://easylist-downloads.adblockplus.org/easylist.txt
 
 ## Upstream DNS-Servers
-The unencrypted 1.1.1.1 is fine if you're sure the connection between your AGH instance and Cloudflare DNS won't be tampered. Otherwise use the encrypted endpoint, either https://cloudflare-dns.com/dns-query for unfiltered query or https://security.cloudflare-dns.com/dns-query for malware filtering. Note that ECH doesn't work if you're using unencrypted upstream.
+### About default DNS
+  The unencrypted 1.1.1.1 is fine if you're sure the connection between your AGH instance and Cloudflare DNS won't be tampered. Otherwise use the encrypted endpoint, either https://cloudflare-dns.com/dns-query for unfiltered query or https://security.cloudflare-dns.com/dns-query for malware filtering. Note that ECH doesn't work if you're using unencrypted upstream.
 
-## All DNS Servers
+### All DNS Servers
 https://adguard-dns.io/kb/general/dns-providers/#cloudflare-dns
 
-DNS Perfomance list:
+### DNS Perfomance list:
 https://www.dnsperf.com/#!dns-resolvers
 
 
