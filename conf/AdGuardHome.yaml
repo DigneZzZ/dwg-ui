@@ -3,7 +3,7 @@ bind_port: 80
 beta_bind_port: 0
 users:
   - name: admin
-    password: $2a$10$HyRpLmLj3mGfvTxjLcoy6e79myyygxwNt4wF8k08dpoWxxZaO0JAq
+    password: $2y$10$G7Qu8Y3szepMfaRUyQ.FmuKR.n4U9dHOQm.GgrIMuYC9UP8vmHJri
 auth_attempts: 5
 block_auth_min: 15
 http_proxy: ""
@@ -14,10 +14,10 @@ dns:
   bind_hosts:
     - 0.0.0.0
   port: 53
-  statistics_interval: 1
+  statistics_interval: 30
   querylog_enabled: true
   querylog_file_enabled: true
-  querylog_interval: 2160h
+  querylog_interval: 720h
   querylog_size_memory: 1000
   anonymize_client_ip: false
   protection_enabled: true
@@ -31,11 +31,18 @@ dns:
   ratelimit_whitelist: []
   refuse_any: true
   upstream_dns:
-    - 10.2.0.200
+    - '#Stock Cloudlfare DNS:'
+    - https://cloudflare-dns.com/dns-query
+    - '#Adguard DNS:These servers block ads, tracking, and phishing'
+    - https://dns.adguard-dns.com/dns-query
+    - '#New increase protocol of Adguard Home DNS-over-QUIC, with the same block settings.'
+    - quic://dns.adguard-dns.com
+    - '#Quad9 Regular DNS servers which provide protection from phishing and spyware. They include blocklists, DNSSEC validation, and other security features.'
+    - https://dns.quad9.net/dns-query
   upstream_dns_file: ""
   bootstrap_dns:
     - 10.2.0.200
-  all_servers: false
+  all_servers: true
   fastest_addr: false
   fastest_timeout: 1s
   allowed_clients: []
@@ -53,14 +60,14 @@ dns:
   cache_optimistic: false
   bogus_nxdomain: []
   aaaa_disabled: false
-  enable_dnssec: false
-  edns_client_subnet: false
+  enable_dnssec: true
+  edns_client_subnet: true
   max_goroutines: 300
   handle_ddr: true
   ipset: []
   ipset_file: ""
   filtering_enabled: true
-  filters_update_interval: 24
+  filters_update_interval: 168
   parental_enabled: false
   safesearch_enabled: false
   safebrowsing_enabled: false
@@ -73,7 +80,8 @@ dns:
   upstream_timeout: 10s
   private_networks: []
   use_private_ptr_resolvers: true
-  local_ptr_upstreams: []
+  local_ptr_upstreams:
+    - 10.2.0.200
   serve_http3: false
   use_http3_upstreams: false
 tls:
@@ -100,6 +108,22 @@ filters:
     url: https://adaway.org/hosts.txt
     name: AdAway Default Blocklist
     id: 2
+  - enabled: true
+    url: https://easylist-downloads.adblockplus.org/advblock.txt
+    name: RuAdlist
+    id: 1670584470
+  - enabled: true
+    url: https://easylist-downloads.adblockplus.org/bitblock.txt
+    name: BitBlock
+    id: 1670584471
+  - enabled: true
+    url: https://easylist-downloads.adblockplus.org/cntblock.txt
+    name: cntblock
+    id: 1670584472
+  - enabled: true
+    url: https://easylist-downloads.adblockplus.org/easylist.txt
+    name: easyList
+    id: 1670584473
 whitelist_filters: []
 user_rules: []
 dhcp:
