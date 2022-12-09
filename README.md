@@ -1,4 +1,4 @@
-# ad-wireguard
+# ad-wireguard-ui
 Combination Wireguird (wg-easy latest) + Adguard Home + Unbound (Latest)
 
 Here is the start of combination
@@ -6,6 +6,8 @@ Here is the start of combination
 * Docker
 * Docker-compose
 
+These confinguration of AdGuard include DNS-over-HTTPS (DoH) via Cloudflare service by using DNS: https://cloudflare-dns.com/dns-query
+Fow query to CF-DNS using Unbound. This is some type of DNS forwarding.
 
 ```bash
 git clone https://github.com/dignezzz/ad-wireguard.git
