@@ -1,4 +1,4 @@
-# ad-wire-guard-ui
+# Ad-WireGuard with UI (AdGuard with DoH DNS +  Wireguard with UI (wg-easy) + Unbound
 Combination Wireguird (wg-easy latest) + Adguard Home + Unbound (Latest)
 
 Here is the start of combination
