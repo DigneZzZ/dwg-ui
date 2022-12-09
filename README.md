@@ -37,7 +37,7 @@ cd ad-wireguard && nano docker-compose.yml
 2. Change admin password:
 See below.
 
-3.Then run
+3. Then run
 ```bash
 
 docker-compose up -d
