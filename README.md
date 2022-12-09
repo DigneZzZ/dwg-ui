@@ -42,7 +42,7 @@ docker-compose up -d
 After install, follow to instruction:
 Go to: http://10.2.0.100/  
 <b>Login:</b> <u>admin</u> <br />
-<b>Password:</b> <u>12345678</u>
+<b>Password:</b> <u>a12345678</u>
 
 ## ATTENTION! Change admin username and/or password
 ### First way:
@@ -62,6 +62,10 @@ users:
   - name: admin
     password: $2y$10$G7Qu8Y3szepMfaRUyQ.FmuKR.n4U9dHOQm.GgrIMuYC9UP8vmHJri
 ```
+4. Recreate your container:
+```bash
+docker-compose up -d --force-recreate
+```
 ### Second way:
 1. Go to site: https://hostingcanada.org/htpasswd-generator/
 2. Change Mode: **bcrypt**
@@ -75,6 +79,10 @@ nano ../ad-wireguard/conf/AdGuardHome.yaml
 users:
   - name: admin
     password: $2y$10$G7Qu8Y3szepMfaRUyQ.FmuKR.n4U9dHOQm.GgrIMuYC9UP8vmHJri
+```
+6. Recreate your container:
+```bash
+docker-compose up -d --force-recreate
 ```
 
 Full information from AGH site: https://docs.cloudron.io/apps/adguard-home/
