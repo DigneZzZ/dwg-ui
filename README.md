@@ -22,7 +22,7 @@ docker-compose up -d
 ## AFter Instalation
 After install, follow to instruction:
 Go to: http://10.2.0.100/  
-<b>Login:</b> <u>admin</u>
+<b>Login:</b> <u>admin</u> <br />
 <b>Password:</b> <u>12345678</u>
 
 # Adlists:
