@@ -12,10 +12,11 @@ Fow query to CF-DNS using Unbound. This is some type of DNS forwarding.
 ## Autors:
 
 👤 ** Alexey **
-[DigneZzZ](https://github.com/DigneZzZ)
+* Git: [DigneZzZ](https://github.com/DigneZzZ)
+* Site: [OpeNode.RU](https://openode.ru)
 
 👤 ** Dmitry **
-[Nuborg](https://github.com/nubortg)
+*Git [Nuborg](https://github.com/nubortg)
 
 
 ## Adguard Web-UI
