@@ -29,12 +29,17 @@ Fow query to CF-DNS using Unbound. This is some type of DNS forwarding.
 
 
 # Quick Install
-
+1. Clone the git
 ```bash
 git clone https://github.com/dignezzz/ad-wireguard.git
 cd ad-wireguard && nano docker-compose.yml
+```
+2. Change admin password:
+See below.
 
-#then run
+3.Then run
+```bash
+
 docker-compose up -d
 ```
 
