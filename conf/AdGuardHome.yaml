@@ -31,7 +31,7 @@ dns:
   ratelimit_whitelist: []
   refuse_any: true
   upstream_dns:
-    - '#Stock Cloudlfare DNS:'
+    - '#Default Cloudlfare DNS:'
     - https://cloudflare-dns.com/dns-query
     - '#Adguard DNS:These servers block ads, tracking, and phishing'
     - https://dns.adguard-dns.com/dns-query
