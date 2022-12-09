@@ -9,10 +9,9 @@ Here is the start of combination
 These confinguration of AdGuard include DNS-over-HTTPS (DoH) via Cloudflare service by using DNS: https://cloudflare-dns.com/dns-query
 Fow query to CF-DNS using Unbound. This is some type of DNS forwarding.
 
-##Autors:
-DigneZzZ(https://github.com/DigneZzZ)
-
-Nuborg(https://github.com/nubortg)
+## Autors:
+👤 ** [DigneZzZ](https://github.com/DigneZzZ)
+👤 ** [Nuborg](https://github.com/nubortg)
 
 ## Adguard Web-UI
 ![image](https://user-images.githubusercontent.com/50312583/206703310-3bc8f759-91fa-42db-8d43-eca0050c70bf.png)
