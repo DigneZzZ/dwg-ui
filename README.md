@@ -1,4 +1,4 @@
-# ad-wireguard-ui
+# ad-wire-guard-ui
 Combination Wireguird (wg-easy latest) + Adguard Home + Unbound (Latest)
 
 Here is the start of combination
@@ -8,6 +8,9 @@ Here is the start of combination
 
 These confinguration of AdGuard include DNS-over-HTTPS (DoH) via Cloudflare service by using DNS: https://cloudflare-dns.com/dns-query
 Fow query to CF-DNS using Unbound. This is some type of DNS forwarding.
+
+![image](https://user-images.githubusercontent.com/50312583/206703207-f3bd39f1-72c7-458c-9893-ad2126a0d47b.png)
+
 
 # Quick Install
 
