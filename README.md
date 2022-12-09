@@ -16,7 +16,7 @@ Fow query to CF-DNS using Unbound. This is some type of DNS forwarding.
 * Site: [OpeNode.RU](https://openode.ru)
 
 👤 ** Dmitry **
-*Git [Nuborg](https://github.com/nubortg)
+* Git [Nuborg](https://github.com/nubortg)
 
 
 ## Adguard Web-UI
