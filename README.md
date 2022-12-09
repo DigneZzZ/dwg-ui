@@ -1,5 +1,5 @@
 # ad-wireguard
-Combination Wireguird + Adguard Home + Unbound (Latest)
+Combination Wireguird (wg-easy latest) + Adguard Home + Unbound (Latest)
 
 Here is the start of combination
 # Requirings:
