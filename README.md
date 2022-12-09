@@ -41,8 +41,8 @@ docker-compose up -d
 ## AFter Instalation
 After install, follow to instruction:
 Go to: http://10.2.0.100/  
-Login: admin 
-Password: a12345678
+### Login: **admin** 
+### Password: **a12345678**
 
 ## ATTENTION! Change admin username and/or password
 ### First way:
