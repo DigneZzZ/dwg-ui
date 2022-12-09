@@ -38,7 +38,7 @@ cd ad-wireguard && nano docker-compose.yml
 docker-compose up -d
 ```
 
-## AFter Instalation
+## After Installation
 After install, follow to instruction:
 Go to: http://10.2.0.100/  
 ### Login: **admin** 
