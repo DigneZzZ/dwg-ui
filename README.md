@@ -44,13 +44,17 @@ See below.
 
 docker-compose up -d
 ```
-WG-Easy web-ui:
+
+
+## After Installation
+
+### WG-Easy web-ui:
 yo.ur.ip.xx:51821 
 And type password from script.
 
-## After Installation
-After install, follow to instruction:
+### AGH
 Go to: http://10.2.0.100/  
+
 ### Login: **admin** 
 ### Password: **a12345678**
 
