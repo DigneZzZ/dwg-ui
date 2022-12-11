@@ -44,6 +44,9 @@ See below.
 
 docker-compose up -d
 ```
+WG-Easy web-ui:
+yo.ur.ip.xx:51821 
+And type password from script.
 
 ## After Installation
 After install, follow to instruction:
