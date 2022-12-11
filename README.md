@@ -52,7 +52,10 @@ docker-compose up -d
 yo.ur.ip.xx:51821 
 And type password from script.
 
+Then..  Connect to WireGuard!
+
 ### AGH
+#### After ur connection to WG:
 Go to: http://10.2.0.100/  
 
 ### Login: **admin** 
