@@ -31,7 +31,7 @@ Recomendation VPS Hosting with 10% Discount: 	[VDSina.ru](https://vdsina.ru/?par
 
 
 # Quick Install
-1. Clone the git
+1. Clone the git and edit install-script
 ```bash
 git clone https://github.com/dignezzz/ad-wireguard.git
 cd ad-wireguard && nano docker-compose.yml
