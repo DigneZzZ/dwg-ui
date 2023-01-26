@@ -37,7 +37,7 @@ git clone https://github.com/dignezzz/ad-wireguard.git
 cd ad-wireguard && nano docker-compose.yml
 ```
 2. Change admin password:
-See below.
+see comments
 
 3. Then run
 ```bash
