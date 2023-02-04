@@ -11,8 +11,6 @@ Fow query to CF-DNS using Unbound. This is some type of DNS forwarding.
 
 Recomendation VPS Hosting with 10% Discount: 	[VDSina.ru](https://vdsina.ru/?partner=rwmhc7jbcg)
 
-#### I do not recommend the VPS service: aeza.net
-
 ## Autors:
 
 👤 ** Alexey **
