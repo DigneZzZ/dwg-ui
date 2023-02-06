@@ -35,7 +35,7 @@ services:
       - WG_PORT=51820
       - WG_DEFAULT_ADDRESS=10.6.0.x
       - WG_DEFAULT_DNS=10.2.0.100
-      #- WG_PORT=51820 ## <<--- Uncomment this if you cant join to the web-admin of AGH/WG-UI
+      #- WG_MTU=1280 ## <<--- Uncomment this if you cant join to the web-admin of AGH/WG-UI
       # - WG_ALLOWED_IPS=192.168.15.0/24, 10.0.1.0/24
 
     image: ditek/wg-easy
