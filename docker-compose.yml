@@ -11,7 +11,8 @@ networks:
 services:
 
   unbound:
-    image: "mvance/unbound:latest"
+    #image: "mvance/unbound:latest"
+    image: "mvance/unbound:1.17.0"
     container_name: unbound
     restart: unless-stopped
     hostname: "unbound"
