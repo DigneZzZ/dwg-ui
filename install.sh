@@ -73,8 +73,8 @@ read -p "Введите пароль для веб-интерфейса: " WEBPA
 echo ""
 
 if [[ "$WEBPASSWORD" =~ ^[[:alnum:]]+$ ]]; then
-  # Записываем в файл новый пароль
-  sed -i "s/- PASSWORD=.*/- PASSWORD=$WEBPASSWORD/g" docker-compose.yml
+  # Записываем в файл новый пароль в кодировке UTF-8
+  sed -i -E "s/- PASSWORD=.*/- PASSWORD=$WEBPASSWORD/g" docker-compose.yml
 else
   echo "Пароль должен состоять только из английских букв и цифр, без пробелов и специальных символов."
 fi
