@@ -72,5 +72,21 @@ read -p "Введите пароль для веб-интерфейса: " WEBPA
 # Записываем в файл новый пароль
 sed -i "s/- PASSWORD=.*/- PASSWORD=$WEBPASSWORD/g" docker-compose.yml
 
+# Даем пользователю информацию по установке
+# Читаем текущие значения из файла docker-compose.yml
+CURRENT_PASSWORD=$(grep PASSWORD docker-compose.yml | cut -d= -f2)
+CURRENT_WG_HOST=$(grep WG_HOST docker-compose.yml | cut -d= -f2)
+CURRENT_WG_DEFAULT_ADDRESS=$(grep WG_DEFAULT_ADDRESS docker-compose.yml | cut -d= -f2)
+CURRENT_WG_DEFAULT_DNS=$(grep WG_DEFAULT_DNS docker-compose.yml | cut -d= -f2)
+
+# Выводим текущие значения для подтверждения пользователя
+echo "Текущие значения:"
+echo "Пароль от веб-интерфейса: $CURRENT_PASSWORD"
+echo "IP адрес сервера: $CURRENT_WG_HOST"
+echo "Маска пользовательских IP: $CURRENT_WG_DEFAULT_ADDRESS"
+echo ""
+echo "Адрес входа в веб-интерфейс WireGuard после установки: $CURRENT_WG_HOST:51821"
+echo "Адрес входа в веб-интерфейс AdGuardHome после установки: $CURRENT_WG_DEFAULT_DNS:51821"
+
 # Запускаем docker-compose
 docker-compose up -d
