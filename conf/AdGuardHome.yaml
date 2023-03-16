@@ -8,17 +8,13 @@ auth_attempts: 5
 block_auth_min: 15
 http_proxy: ""
 language: ""
+theme: auto
 debug_pprof: false
 web_session_ttl: 720
 dns:
   bind_hosts:
     - 0.0.0.0
   port: 53
-  statistics_interval: 30
-  querylog_enabled: true
-  querylog_file_enabled: true
-  querylog_interval: 720h
-  querylog_size_memory: 1000
   anonymize_client_ip: false
   protection_enabled: true
   blocking_mode: default
@@ -37,13 +33,13 @@ dns:
     - https://dns.adguard-dns.com/dns-query
     - '#New increase protocol of Adguard Home DNS-over-QUIC, with the same block settings.'
     - quic://dns.adguard-dns.com
-    - '#Quad9 Regular DNS servers which provide protection from phishing and spyware. They include blocklists, DNSSEC validation, and other security features.'
+    - 'Quad9 Regular DNS servers which provide protection from phishing and spyware. They include blocklists, DNSSEC validation, and other security features.'
     - https://dns.quad9.net/dns-query
   upstream_dns_file: ""
   bootstrap_dns:
     - 10.2.0.200
-  all_servers: true
-  fastest_addr: false
+  all_servers: false
+  fastest_addr: true
   fastest_timeout: 1s
   allowed_clients: []
   disallowed_clients: []
@@ -82,6 +78,8 @@ dns:
   use_private_ptr_resolvers: true
   local_ptr_upstreams:
     - 10.2.0.200
+  use_dns64: false
+  dns64_prefixes: []
   serve_http3: false
   use_http3_upstreams: false
 tls:
@@ -99,12 +97,22 @@ tls:
   certificate_path: ""
   private_key_path: ""
   strict_sni_check: false
+querylog:
+  enabled: true
+  file_enabled: true
+  interval: 720h
+  size_memory: 1000
+  ignored: []
+statistics:
+  enabled: true
+  interval: 30
+  ignored: []
 filters:
   - enabled: true
     url: https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt
     name: AdGuard DNS filter
     id: 1
-  - enabled: false
+  - enabled: true
     url: https://adaway.org/hosts.txt
     name: AdAway Default Blocklist
     id: 2
@@ -124,6 +132,14 @@ filters:
     url: https://easylist-downloads.adblockplus.org/easylist.txt
     name: easyList
     id: 1670584473
+  - enabled: true
+    url: https://schakal.ru/hosts/alive_hosts_ru_com.txt
+    name: то же без неотвечающих хостов и доменов вне зон RU, NET и COM
+    id: 1677533164
+  - enabled: true
+    url: https://schakal.ru/hosts/hosts_mail_fb.txt
+    name: файл с разблокированными r.mail.ru и graph.facebook.com
+    id: 1677533165
 whitelist_filters: []
 user_rules: []
 dhcp:
@@ -162,4 +178,4 @@ os:
   group: ""
   user: ""
   rlimit_nofile: 0
-schema_version: 14
+schema_version: 16
