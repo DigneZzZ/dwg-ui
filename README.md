@@ -3,7 +3,7 @@ Combination WireGuard (wg-easy latest) + Adguard Home + Unbound (Latest)
 
 Here is the start of combination
 # Requirings:
-* Docker
+* Docker (include in install.sh for Debian 10-11, Ubuntu 20-22.04
 * Docker-compose
 
 These confinguration of AdGuard include DNS-over-HTTPS (DoH) via Cloudflare service by using DNS: https://cloudflare-dns.com/dns-query
@@ -35,16 +35,7 @@ Recomendation VPS Hosting with 10% Discount: 	[VDSina.ru](https://vdsina.ru/?par
 # Quick Install
 1. Clone the git and edit install-script
 ```bash
-git clone https://github.com/dignezzz/ad-wireguard.git
-cd ad-wireguard && nano docker-compose.yml
-```
-2. Change admin password:
-see comments
-
-3. Then run
-```bash
-
-docker-compose up -d
+ git clone https://github.com/dignezzz/ad-wireguard.git && cd ad-wireguard && chmod +x install.sh && ./install.sh
 ```
 
 
