@@ -29,7 +29,7 @@ services:
     environment:
       # ⚠️ Required:
       # Change this to your host's public address
-      - WG_HOST=my.ddns.net   #### <----CHANGE TO YOUR IP-Address
+      - WG_HOST=$(curl -s ifconfig.me)   #### <----CHANGE TO YOUR IP-Address
 
       # Optional:
       - PASSWORD=10h30 ####<----CHANGE TO YOU
