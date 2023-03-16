@@ -1,36 +1,20 @@
 #!/bin/bash
 
-# функция для удаления Docker Compose
-uninstall_docker_compose() {
-  echo "Удаляем Docker Compose..."
-  sudo rm /usr/local/bin/docker-compose
-  echo "Docker Compose успешно удален."
-}
-
-# определение дистрибутива Linux и его версии
+# Определение дистрибутива Linux и его версии
 if [ -f /etc/lsb-release ]; then
-  . /etc/lsb-release
-  OS=$DISTRIB_ID
-  VER=$DISTRIB_RELEASE
+    . /etc/lsb-release
+    OS=$DISTRIB_ID
+    VER=$DISTRIB_RELEASE
 elif [ -f /etc/debian_version ]; then
-  OS=debian
-  VER=$(cat /etc/debian_version)
-elif [ -f /etc/redhat-release ]; then
-  OS=$(awk '{print $1}' /etc/redhat-release | tr '[:upper:]' '[:lower:]')
-  VER=$(awk '{print $4}' /etc/redhat-release | cut -d. -f1)
+    OS=Debian
+    VER=$(cat /etc/debian_version)
 else
     OS=$(uname -s)
     VER=$(uname -r)
 fi
 
-# проверяем наличие Docker Compose и удаляем его, если он установлен
-if command -v docker-compose &> /dev/null
-then
-    uninstall_docker_compose
-fi
-
 # Установка Docker CE на основе дистрибутива Linux и его версии
-if [ $OS == "ubuntu" ] && [ $VER == "20.04" ]; then
+if [ $OS == "Ubuntu" ] && [ $VER == "20.04" ]; then
     # Установка Docker CE для Ubuntu 20.04
     apt-get update
     apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release 
@@ -40,7 +24,7 @@ if [ $OS == "ubuntu" ] && [ $VER == "20.04" ]; then
       $(lsb_release -cs) stable" | tee --force-confmiss /etc/apt/sources.list.d/docker.list > /dev/null
     apt-get update
     apt-get install -y docker-ce docker-ce-cli containerd.io
-elif [ $OS == "ubuntu" ] && [ $VER == "22.04" ]; then
+elif [ $OS == "Ubuntu" ] && [ $VER == "22.04" ]; then
     # Установка Docker CE для Ubuntu 22.04
     apt-get update
     apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
@@ -50,7 +34,7 @@ elif [ $OS == "ubuntu" ] && [ $VER == "22.04" ]; then
       $(lsb_release -cs) stable" | tee --force-confmiss /etc/apt/sources.list.d/docker.list > /dev/null
     apt-get update
     apt-get install -y docker-ce docker-ce-cli containerd.io
-elif [ $OS == "debian" ] && [ $VER == "11" ]; then
+elif [ $OS == "Debian" ] && [ $VER == "11" ]; then
     # Установка Docker CE для Debian 11
     apt-get update
     apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
@@ -60,7 +44,7 @@ elif [ $OS == "debian" ] && [ $VER == "11" ]; then
       $(lsb_release -cs) stable" | tee --force-confmiss /etc/apt/sources.list.d/docker.list > /dev/null
     apt-get update
     apt-get install -y docker-ce docker-ce-cli containerd.io
-elif [ $OS == "debian" ] && [ $VER == "10" ]; then
+elif [ $OS == "Debian" ] && [ $VER == "10" ]; then
     # Установка Docker CE для Debian 10
     apt-get update
     apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
@@ -68,33 +52,11 @@ elif [ $OS == "debian" ] && [ $VER == "10" ]; then
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
     apt-get update
     apt-get install -y docker-ce docker-ce-cli containerd.io
-elif [ $OS == "centos" ] && [ $VER == "7" ]; then
-  # Установка Docker CE для CentOS 7
-  yum install -y yum-utils device-mapper-persistent-data lvm2
-  yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-  yum install docker-ce docker-ce-cli containerd.io
-  systemctl start docker
-  systemctl enable docker
-elif [ $OS == "centos" ] && [ $VER == "8" ]; then
-  # Установка Docker CE для CentOS 8
-  yum install -y dnf-plugins-core
-  dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-  dnf install docker-ce docker-ce-cli containerd.io
-  systemctl start docker
-  systemctl enable docker
-elif [ $OS == "centos" ] && [ $VER == "9" ]; then
-  # Установка Docker CE для CentOS 9
-  dnf install -y yum-utils device-mapper-persistent-data lvm2
-  yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-  yum install docker-ce docker-ce-cli containerd.io
-  systemctl start docker
-  systemctl enable docker
 else
-  echo "Дистрибутив Linux и/или его версия не поддерживается."
-  exit 1
+    echo "Дистрибутив Linux и/или его версия не поддерживается."
+    exit 1
 fi
 
-echo "Docker CE успешно установлен."
 # Установка Docker Compose
 curl -L --fail https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
 
@@ -105,6 +67,7 @@ MYHOST_IP=$(hostname -I | cut -d' ' -f1)
 sed -i "s/- WG_HOST=.*/- WG_HOST=$MYHOST_IP/g" docker-compose.yml
 
 # Запросите у пользователя пароль
+echo ""
 echo ""
 read -p "Введите пароль для веб-интерфейса: " WEBPASSWORD
 echo ""
