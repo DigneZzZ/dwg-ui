@@ -35,7 +35,7 @@ Recomendation VPS Hosting with 10% Discount: 	[VDSina.ru](https://vdsina.ru/?par
 # Quick Install
 1. Clone the git and edit install-script
 ```bash
-apt update && apt install nano -y && apt install git -y && git clone https://github.com/dignezzz/ad-wireguard.git && cd ad-wireguard && chmod +x install.sh && ./install.sh
+apt update && apt install nano -y && apt install git -y && git clone https://github.com/dignezzz/ad-wireguard.git && cd ad-wireguard && chmod +x install.sh && ./install.sh && cd 
 ```
 
 
