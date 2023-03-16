@@ -109,3 +109,8 @@ fi
 
 # Запускаем docker-compose
 docker-compose up -d
+
+echo ""
+echo "Адрес входа в веб-интерфейс WireGuard после установки: http://$CURRENT_WG_HOST:51821"
+echo "Адрес входа в веб-интерфейс AdGuardHome после установки: http://$CURRENT_WG_DEFAULT_DNS:51821"
+echo ""
