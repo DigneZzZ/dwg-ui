@@ -72,8 +72,12 @@ echo ""
 read -p "Введите пароль для веб-интерфейса: " WEBPASSWORD
 echo ""
 
-# Записываем в файл новый пароль
-sed -i "s/- PASSWORD=.*/- PASSWORD=$WEBPASSWORD/g" docker-compose.yml
+if [[ "$WEBPASSWORD" =~ ^[[:alnum:]]+$ ]]; then
+  # Записываем в файл новый пароль
+  sed -i "s/- PASSWORD=.*/- PASSWORD=$WEBPASSWORD/g" docker-compose.yml
+else
+  echo "Пароль должен состоять только из английских букв и цифр, без пробелов и специальных символов."
+fi
 
 # Даем пользователю информацию по установке
 # Читаем текущие значения из файла docker-compose.yml
