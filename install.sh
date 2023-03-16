@@ -96,16 +96,16 @@ echo ""
 echo ""
 
 # Запрашиваем подтверждение пользователя
-read -p "У вас есть проблемы со входом в AdGuardHome или WireGuard UI? (Наблюдается на хостинге Aeza) (y/n) " RESPONSE
+#read -p "У вас есть проблемы со входом в AdGuardHome или WireGuard UI? (Наблюдается на хостинге Aeza) (y/n) " RESPONSE
 
 # Если пользователь подтвердил, запрашиваем новые значения и обновляем файл docker-compose.yml
-if [[ "$RESPONSE" =~ ^[Yy]$ ]]; then
-  read -p "Для устранения проблемы со входом необходимо поменять WG_MTU=1280. Мы сделаем это автоматически. Вы точно хотите это сделать?? (y/n) " PASSWORD_RESPONSE
+#if [[ "$RESPONSE" =~ ^[Yy]$ ]]; then
+#  read -p "Для устранения проблемы со входом необходимо поменять WG_MTU=1280. Мы сделаем это автоматически. Вы точно хотите это сделать?? (y/n) " PASSWORD_RESPONSE
   
-  if [[ "$PASSWORD_RESPONSE" =~ ^[Yy]$ ]]; then
-    sed -i "s/#- WG_MTU=.*/- WG_MTU=1280/g" docker-compose.yml
-  fi
-fi
+#  if [[ "$PASSWORD_RESPONSE" =~ ^[Yy]$ ]]; then
+#    sed -i "s/#- WG_MTU=.*/- WG_MTU=1280/g" docker-compose.yml
+#  fi
+#fi
 
 # Запускаем docker-compose
 docker-compose up -d
