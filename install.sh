@@ -66,6 +66,11 @@ MYHOST_IP=$(hostname -I | cut -d' ' -f1)
 # Записываем IP-адрес в файл docker-compose.yml с меткой MYHOSTIP
 sed -i "s/MYHOST_IP/$MYHOST_IP/g" docker-compose.yml
 
+# Запросите у пользователя пароль
+read -p "Введите пароль для веб-интерфейса: " WEBPASSWORD
+
+# Записываем в файл новый пароль
+sed -i "s/- PASSWORD=.*/- PASSWORD=$WEBPASSWORD/g" docker-compose.yml
+
 # Запускаем docker-compose
 docker-compose up -d
-
