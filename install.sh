@@ -64,7 +64,7 @@ curl -L --fail https://raw.githubusercontent.com/linuxserver/docker-docker-compo
 MYHOST_IP=$(hostname -I | cut -d' ' -f1)
 
 # Записываем IP-адрес в файл docker-compose.yml с меткой MYHOSTIP
-sed -i "s/- WG_HOST=.*/- WG_HOST=$MYHOST_IP/g" docker-compose.yml
+sed -i -E  "s/- WG_HOST=.*/- WG_HOST=$MYHOST_IP/g" docker-compose.yml
 
 # Запросите у пользователя пароль
 echo ""
