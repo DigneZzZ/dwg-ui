@@ -68,21 +68,21 @@ elif [ $OS == "debian" ] && [ $VER == "10" ]; then
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
     apt-get update
     apt-get install -y docker-ce docker-ce-cli containerd.io
-elif [ $OS == "centos" ] &&  $VER == "7" ; then
+elif [ $OS == "centos" ] && [ $VER == "7" ]; then
   # Установка Docker CE для CentOS 7
   yum install -y yum-utils device-mapper-persistent-data lvm2
   yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
   yum install docker-ce docker-ce-cli containerd.io
   systemctl start docker
   systemctl enable docker
-elif  $OS == "centos"  &&  $VER == "8" ; then
+elif [ $OS == "centos" ] && [ $VER == "8" ]; then
   # Установка Docker CE для CentOS 8
   yum install -y dnf-plugins-core
   dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
   dnf install docker-ce docker-ce-cli containerd.io
   systemctl start docker
   systemctl enable docker
-elif  $OS == "centos"  &&  $VER == "9" ; then
+elif [ $OS == "centos" ] && [ $VER == "9" ]; then
   # Установка Docker CE для CentOS 9
   dnf install -y yum-utils device-mapper-persistent-data lvm2
   yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
