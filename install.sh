@@ -17,7 +17,7 @@ fi
 if [ $OS == "Ubuntu" ] && [ $VER == "20.04" ]; then
     # Установка Docker CE для Ubuntu 20.04
     apt-get update
-    apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+    apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release 
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
     echo \
       "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
@@ -64,10 +64,13 @@ curl -L --fail https://raw.githubusercontent.com/linuxserver/docker-docker-compo
 MYHOST_IP=$(hostname -I | cut -d' ' -f1)
 
 # Записываем IP-адрес в файл docker-compose.yml с меткой MYHOSTIP
-sed -i "s/MYHOST_IP/$MYHOST_IP/g" docker-compose.yml
+sed -i "s/- WG_HOST=.*/- WG_HOST=$MYHOST_IP/g" docker-compose.yml
 
 # Запросите у пользователя пароль
+echo ""
+echo ""
 read -p "Введите пароль для веб-интерфейса: " WEBPASSWORD
+echo ""
 
 # Записываем в файл новый пароль
 sed -i "s/- PASSWORD=.*/- PASSWORD=$WEBPASSWORD/g" docker-compose.yml
@@ -80,14 +83,17 @@ CURRENT_WG_DEFAULT_ADDRESS=$(grep WG_DEFAULT_ADDRESS docker-compose.yml | cut -d
 CURRENT_WG_DEFAULT_DNS=$(grep WG_DEFAULT_DNS docker-compose.yml | cut -d= -f2)
 
 # Выводим текущие значения для подтверждения пользователя
+echo ""
 echo "Текущие значения:"
+echo ""
 echo "Пароль от веб-интерфейса: $CURRENT_PASSWORD"
 echo "IP адрес сервера: $CURRENT_WG_HOST"
 echo "Маска пользовательских IP: $CURRENT_WG_DEFAULT_ADDRESS"
 echo ""
 echo "Адрес входа в веб-интерфейс WireGuard после установки: $CURRENT_WG_HOST:51821"
 echo "Адрес входа в веб-интерфейс AdGuardHome после установки: $CURRENT_WG_DEFAULT_DNS:51821"
-
+echo ""
+echo ""
 
 # Запрашиваем подтверждение пользователя
 read -p "У вас есть проблемы со входом в AdGuardHome или WireGuard UI? (Наблюдается на хостинге Aeza) (y/n) " RESPONSE
@@ -99,7 +105,7 @@ if [[ "$RESPONSE" =~ ^[Yy]$ ]]; then
   if [[ "$PASSWORD_RESPONSE" =~ ^[Yy]$ ]]; then
     sed -i "s/#- WG_MTU=.*/- WG_MTU=1280/g" docker-compose.yml
   fi
-
+fi
 
 # Запускаем docker-compose
 docker-compose up -d
