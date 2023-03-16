@@ -19,8 +19,8 @@ elif [ -f /etc/redhat-release ]; then
   OS=$(awk '{print $1}' /etc/redhat-release | tr '[:upper:]' '[:lower:]')
   VER=$(awk '{print $4}' /etc/redhat-release | cut -d. -f1)
 else
-  echo "Дистрибутив Linux не поддерживается."
-  exit 1
+    OS=$(uname -s)
+    VER=$(uname -r)
 fi
 
 # проверяем наличие Docker Compose и удаляем его, если он установлен
