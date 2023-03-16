@@ -88,5 +88,18 @@ echo ""
 echo "Адрес входа в веб-интерфейс WireGuard после установки: $CURRENT_WG_HOST:51821"
 echo "Адрес входа в веб-интерфейс AdGuardHome после установки: $CURRENT_WG_DEFAULT_DNS:51821"
 
+
+# Запрашиваем подтверждение пользователя
+read -p "У вас есть проблемы со входом в AdGuardHome или WireGuard UI? (Наблюдается на хостинге Aeza) (y/n) " RESPONSE
+
+# Если пользователь подтвердил, запрашиваем новые значения и обновляем файл docker-compose.yml
+if [[ "$RESPONSE" =~ ^[Yy]$ ]]; then
+  read -p "Для устранения проблемы со входом необходимо поменять WG_MTU=1280. Мы сделаем это автоматически. Вы точно хотите это сделать?? (y/n) " PASSWORD_RESPONSE
+  
+  if [[ "$PASSWORD_RESPONSE" =~ ^[Yy]$ ]]; then
+    sed -i "s/#- WG_MTU=.*/- WG_MTU=1280/g" docker-compose.yml
+  fi
+
+
 # Запускаем docker-compose
 docker-compose up -d
