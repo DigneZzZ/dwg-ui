@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#!/bin/bash
-
 if grep -q "VERSION_ID=\"10\"" /etc/os-release; then
   echo "Этот скрипт не может быть выполнен на Debian 10."
   exit 1
