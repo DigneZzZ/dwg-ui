@@ -33,6 +33,7 @@ apt update && apt install git -y && git clone https://github.com/dignezzz/ad-wir
 ```
 
 ## Что установится:
+0. Сначала установится Git, чтобы можно было скопировать мой репозиторий
 1. Docker - последняя версия
 2. Docker-compose - последняя версия
 3. Wg-easy - интерактивный режим введения пароля для веб
