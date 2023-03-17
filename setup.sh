@@ -24,7 +24,7 @@ for choice in "${selected[@]}"; do
             if curl -O https://raw.githubusercontent.com/DigneZzZ/ad-wireguard/main/ssh.sh && chmod +x ssh.sh && sh ssh.sh; then
                 echo -e "${GREEN}Файл ssh.sh загружен и запущен успешно.${NC}"
             else
-                echo -e "${RED}Не удалось загрузить или запустить файл example_script.sh.${NC}"
+                echo -e "${RED}Не удалось загрузить или запустить файл ssh.sh${NC}"
             fi
             ;;
         2)
