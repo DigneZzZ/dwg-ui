@@ -13,52 +13,87 @@ else
     VER=$(uname -r)
 fi
 
-# Установка Docker CE на основе дистрибутива Linux и его версии
-if [ $OS == "Ubuntu" ] && [ $VER == "20.04" ]; then
-    # Установка Docker CE для Ubuntu 20.04
-    apt-get update
-    apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release 
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -у -o /usr/share/keyrings/docker-archive-keyring.gpg
-    echo \
-      "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-      $(lsb_release -cs) stable" | tee --force-confmiss /etc/apt/sources.list.d/docker.list > /dev/null
-    apt-get update
-    apt-get install -y docker-ce docker-ce-cli containerd.io
-elif [ $OS == "Ubuntu" ] && [ $VER == "22.04" ]; then
-    # Установка Docker CE для Ubuntu 22.04
-    apt-get update
-    apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -у -o /usr/share/keyrings/docker-archive-keyring.gpg
-    echo \
-      "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-      $(lsb_release -cs) stable" | tee --force-confmiss /etc/apt/sources.list.d/docker.list > /dev/null
-    apt-get update
-    apt-get install -y docker-ce docker-ce-cli containerd.io
-elif [ $OS == "Debian" ] && [ $VER == "11" ]; then
-    # Установка Docker CE для Debian 11
-    apt-get update
-    apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
-    curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -у -o /usr/share/keyrings/docker-archive-keyring.gpg
-    echo \
-      "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
-      $(lsb_release -cs) stable" | tee --force-confmiss /etc/apt/sources.list.d/docker.list > /dev/null
-    apt-get update
-    apt-get install -y docker-ce docker-ce-cli containerd.io
-elif [ $OS == "Debian" ] && [ $VER == "10" ]; then
-    # Установка Docker CE для Debian 10
-    apt-get update
-    apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
-    curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -y -
-    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
-    apt-get update
-    apt-get install -y docker-ce docker-ce-cli containerd.io
+# Проверка наличия Docker
+if ! command -v docker &> /dev/null
+then
+    read -p "Docker не найден. Установить Docker? (y/n) " INSTALL_DOCKER
+    if [ "$INSTALL_DOCKER" == "y" ]; then
+        # Установка Docker CE на основе дистрибутива Linux и его версии
+        if [ $OS == "Ubuntu" ] && [ $VER == "20.04" ]; then
+            # Установка Docker CE для Ubuntu 20.04
+            apt-get update
+            apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release 
+            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -у -o /usr/share/keyrings/docker-archive-keyring.gpg
+            echo \
+              "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+              $(lsb_release -cs) stable" | tee --force-confmiss /etc/apt/sources.list.d/docker.list > /dev/null
+            apt-get update
+            apt-get install -y docker-ce docker-ce-cli containerd.io
+        elif [ $OS == "Ubuntu" ] && [ $VER == "22.04" ]; then
+            # Установка Docker CE для Ubuntu 22.04
+            apt-get update
+            apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -у -o /usr/share/keyrings/docker-archive-keyring.gpg
+            echo \
+              "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+              $(lsb_release -cs) stable" | tee --force-confmiss /etc/apt/sources.list.d/docker.list > /dev/null
+            apt-get update
+            apt-get install -y docker-ce docker-ce-cli containerd.io
+        elif [ $OS == "Debian" ] && [ $VER == "11" ]; then
+            # Установка Docker CE для Debian 11
+            apt-get update
+            apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+            curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -у -o /usr/share/keyrings/docker-archive-keyring.gpg
+            echo \
+              "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
+              $(lsb_release -cs) stable" | tee --force-confmiss /etc/apt/sources.list.d/docker.list > /dev/null
+            apt-get update
+            apt-get install -y docker-ce docker-ce-cli containerd.io
+        elif [ $OS == "Debian" ] && [ $VER == "10" ]; then
+            # Установка Docker CE для Debian 10
+            apt-get update
+            apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
+            curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -y -
+            add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+            apt-get update
+            apt-get install -y docker-ce docker-ce-cli containerd.io
+        else
+            echo "Дистрибутив Linux и/или его версия не поддерживается."
+            exit 1
+        fi
+    fi
 else
-    echo "Дистрибутив Linux и/или его версия не поддерживается."
-    exit 1
+    echo "Docker уже установлен."
 fi
 
-# Установка Docker Compose
-curl -L --fail https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
+# Проверка наличия Docker Compose
+if ! command -v docker-compose &> /dev/null
+then
+    read -p "Docker Compose не найден. Установить Docker Compose? (y/n) " INSTALL_COMPOSE
+    if [ "$INSTALL_COMPOSE" == "y" ]; then
+        # Установка Docker Compose
+        curl -L --fail https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
+    fi
+else
+    read -p "Docker Compose уже установлен. Хотите переустановить? (y/n) " REINSTALL_COMPOSE
+    if [ "$REINSTALL_COMPOSE" == "y" ]; then
+        # Удаление Docker Compose
+        rm /usr/local/bin/docker-compose
+        # Установка Docker Compose
+        curl -L --fail https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
+    fi
+fi
+
+if ! command -v nano &> /dev/null
+then
+    read -p "Хотите установить текстовый редактор Nano? (y/n) " INSTALL_NANO
+    if [ "$INSTALL_NANO" == "y" ]; then
+        apt-get update
+        apt-get install -y nano
+    fi
+else
+    echo "Текстовый редактор Nano уже установлен."
+fi
 
 # Получаем внешний IP-адрес
 MYHOST_IP=$(hostname -I | cut -d' ' -f1)
