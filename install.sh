@@ -137,17 +137,40 @@ echo "Адрес входа в веб-интерфейс AdGuardHome после 
 echo ""
 echo ""
 
-# Запрашиваем подтверждение пользователя
-#read -p "У вас есть проблемы со входом в AdGuardHome или WireGuard UI? (Наблюдается на хостинге Aeza) (y/n) " RESPONSE
 
-# Если пользователь подтвердил, запрашиваем новые значения и обновляем файл docker-compose.yml
-#if [[ "$RESPONSE" =~ ^[Yy]$ ]]; then
-#  read -p "Для устранения проблемы со входом необходимо поменять WG_MTU=1280. Мы сделаем это автоматически. Вы точно хотите это сделать?? (y/n) " PASSWORD_RESPONSE
-  
-#  if [[ "$PASSWORD_RESPONSE" =~ ^[Yy]$ ]]; then
-#    sed -i "s/#- WG_MTU=.*/- WG_MTU=1280/g" docker-compose.yml
-#  fi
-#fi
+# Устанавливаем apache2-utils, если она не установлена
+if ! [ -x "$(command -v htpasswd)" ]; then
+  echo 'Установка apache2-utils...' >&2
+  sudo apt-get update
+  sudo apt-get install apache2-utils -y
+fi
+
+# Запрашиваем у пользователя логин
+echo "Введите логин (по умолчанию admin):"
+read username
+
+# Если логин не введен, устанавливаем логин по умолчанию "admin"
+if [ -z "$username" ]; then
+  username="admin"
+fi
+
+# Запрашиваем у пользователя пароль
+echo "Введите пароль:"
+read password
+
+# Генерируем хеш пароля с помощью htpasswd из пакета apache2-utils
+hashed_password=$(htpasswd -bnB $username $password | cut -d ":" -f 2)
+
+# Записываем связку логина и зашифрованного пароля в файл conf/AdGuardHome.yaml
+sed -i "s/\(name: $username\).*\(password: \).*/\1\n\2$hashed_password/" conf/AdGuardHome.yaml
+
+# Выводим сообщение об успешной записи связки логина и пароля в файл
+echo "Связка логина и пароля успешно записана в файл conf/AdGuardHome.yaml"
+
+# Выводим связку логина и пароля в консоль
+echo "Ниже представлены логин и пароль для входа в AdGuardHome"
+echo "Логин: $username"
+echo "Пароль: $password"
 
 # Запускаем docker-compose
 docker-compose up -d
