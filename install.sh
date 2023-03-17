@@ -92,7 +92,7 @@ while true; do
 
   if [[ "$WEBPASSWORD" =~ ^[[:alnum:]]+$ ]]; then
     # Записываем в файл новый пароль в кодировке UTF-8
-    printf '%s\n' "- PASSWORD=$WEBPASSWORD" > .env
+    sed -i -E "s/- PASSWORD=.*/- PASSWORD=$WEBPASSWORD/g" docker-compose.yml
     break
   else
     echo "Пароль должен состоять только из английских букв и цифр, без пробелов и специальных символов."
