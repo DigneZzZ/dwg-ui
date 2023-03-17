@@ -85,7 +85,7 @@ while true; do
 
   if [[ "$WEBPASSWORD" =~ ^[[:alnum:]]+$ ]]; then
     # Записываем в файл новый пароль в кодировке UTF-8
-    sed -i -E "s/- PASSWORD=.*/- PASSWORD=\"$WEBPASSWORD\"/g" docker-compose.yml
+    printf '%s\n' "- PASSWORD=$WEBPASSWORD" > .env
     break
   else
     echo "Пароль должен состоять только из английских букв и цифр, без пробелов и специальных символов."
@@ -148,7 +148,7 @@ while true; do
 done
 
 # Генерируем хеш пароля с помощью htpasswd из пакета apache2-utils
-hashed_password=$(htpasswd -nbB $username '$password' | cut -d ":" -f 2)
+hashed_password=$(htpasswd -nbB $username "$password" | cut -d ":" -f 2)
 
 # Экранируем символы / и & в hashed_password
 hashed_password=$(echo "$hashed_password" | sed -e 's/[\/&]/\\&/g')
@@ -158,7 +158,6 @@ sed -i "s/\(name: $username\).*\(password: \).*/\1\n\2$hashed_password/" conf/Ad
 
 # Выводим сообщение об успешной записи связки логина и пароля в файл
 echo -e "${GREEN}Связка логина и пароля успешно записана в файл conf/AdGuardHome.yaml${NC}"
-
 
 # Выводим связку логина и пароля в консоль
 echo "Ниже представлены логин и пароль для входа в AdGuardHome"
