@@ -196,14 +196,19 @@ echo -e "${GREEN}Пароль: $password${NC}"
 docker-compose up -d
 
 echo ""
-echo -e "Адрес входа в веб-интерфейс WireGuard после установки: ${YELLOW}http://$CURRENT_WG_HOST:51821${NC}"
-echo -e "Адрес входа в веб-интерфейс AdGuardHome после установки (только когда подключитесь к сети WireGuard!!!): ${YELLOW}http://$CURRENT_WG_DEFAULT_DNS${NC}"
+echo -e "Адрес входа в веб-интерфейс WireGuard после установки: ${BLUE}http://$CURRENT_WG_HOST:51821${NC}"
+echo -e "Пароль от веб-интерфейса: ${BLUE}$CURRENT_PASSWORD${NC}"
+echo ""
+echo -e "Адрес входа в веб-интерфейс AdGuardHome после установки (только когда подключитесь к сети WireGuard!!!): ${BLUE}http://$CURRENT_WG_DEFAULT_DNS${NC}"
+echo "Ниже представлены логин и пароль для входа в AdGuardHome"
+echo -e "Логин:${BLUE} $username${NC}"
+echo -e "Пароль:${BLUE} $password${NC}"
 echo ""
 
 # РАЗДЕЛ ИЗМЕНЕНИЯ ПОРТА SSH для подключения пользователя
 # Проверяем наличие файла конфигурации SSH
 if [ ! -f /etc/ssh/sshd_config ]; then
-    echo -e "\e[91mОшибка: файл конфигурации SSH (/etc/ssh/sshd_config) не найден.\e[0m"
+    echo -e "${RED}Ошибка: файл конфигурации SSH (/etc/ssh/sshd_config) не найден.${NC}"
     exit 1
 fi
 
@@ -216,27 +221,27 @@ if [ -z "$current_port" ]; then
 fi
 
 # Определяем, хочет ли пользователь изменить порт
-read -p $'\e[93m'"Текущий порт SSH: $current_port. Хотите изменить порт? (y/n): "'\e[0m' change_port
+read -p $'\e[1;33m'"Текущий порт SSH: $current_port. Хотите изменить порт? (y/n): "'\e[0m' change_port
 
 if [ "$change_port" == "y" ]; then
     # Запрос нового порта
-    read -p $'\e[93m'"Введите новый порт (допустимый диапазон: 1024-65535): "'\e[0m' new_port
+    read -p $'\e[1;33m'"Введите новый порт (допустимый диапазон: 1024-65535): "'\e[0m' new_port
 
     # Проверка, что введено число
     if ! [[ "$new_port" =~ ^[0-9]+$ ]]; then
-        echo -e "\e[91mОшибка: порт должен быть числом.\e[0m"
+        echo -e "${RED}Ошибка: порт должен быть числом.${NC}"
         exit 1
     fi
 
     # Проверка, что порт в допустимом диапазоне
     if [ "$new_port" -lt 1024 ] || [ "$new_port" -gt 65535 ]; then
-        echo -e "\e[91mОшибка: порт должен быть в диапазоне от 1024 до 65535.\e[0m"
+        echo -e "${RED}Ошибка: порт должен быть в диапазоне от 1024 до 65535.${NC}"
         exit 1
     fi
 
     # Проверка, что порт не используется другим сервисом
     if ss -tnlp | grep -q ":$new_port "; then
-        echo -e "\e[91mОшибка: порт $new_port уже используется другим сервисом.\e[0m"
+        echo -e "${RED}Ошибка: порт $new_port уже используется другим сервисом.${NC}"
         exit 1
     fi
 
@@ -249,11 +254,11 @@ if [ "$change_port" == "y" ]; then
 
     systemctl restart sshd
 
-    echo -e "\e[32mПорт SSH успешно изменен на $new_port.\e[0m"
+    echo -e "${GREEN}Порт SSH успешно изменен на $new_port.${NC}"
 elif [ "$change_port" == "n" ]; then
-    echo -e "\e[32mПорт SSH останется неизменным.\e[0m"
+    echo -e "${GREEN}Порт SSH останется неизменным.${NC}"
 else
-    echo -e "\e[91mНеверный ответ. Пожалуйста, введите 'y' или 'n'.\e[0m"
+    echo -e "${RED}Неверный ответ. Пожалуйста, введите 'y' или 'n'.${NC}"
     exit 1
 fi
 
