@@ -1,5 +1,14 @@
 #!/bin/bash
 
+#!/bin/bash
+
+if grep -q "VERSION_ID=\"10\"" /etc/os-release; then
+  echo "Этот скрипт не может быть выполнен на Debian 10."
+  exit 1
+fi
+
+# Здесь идет код скрипта, который должен быть выполнен на всех системах, кроме Debian 10
+
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
