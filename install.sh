@@ -2,6 +2,7 @@
 
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
 RED='\033[0;31m'
 NC='\033[0m'
 
@@ -129,16 +130,17 @@ CURRENT_WG_HOST=$(grep WG_HOST docker-compose.yml | cut -d= -f2)
 CURRENT_WG_DEFAULT_ADDRESS=$(grep WG_DEFAULT_ADDRESS docker-compose.yml | cut -d= -f2)
 CURRENT_WG_DEFAULT_DNS=$(grep WG_DEFAULT_DNS docker-compose.yml | cut -d= -f2)
 
-# Выводим текущие значения для подтверждения пользователя
+
+# Выводим текущие значения
 echo ""
-echo "Текущие значения:"
+echo -e "${BLUE}Текущие значения:${NC}"
 echo ""
-echo "Пароль от веб-интерфейса: $CURRENT_PASSWORD"
-echo "IP адрес сервера: $CURRENT_WG_HOST"
-echo "Маска пользовательских IP: $CURRENT_WG_DEFAULT_ADDRESS"
+echo -e "Пароль от веб-интерфейса: ${BLUE}$CURRENT_PASSWORD${NC}"
+echo -e "IP адрес сервера: ${BLUE}$CURRENT_WG_HOST${NC}"
+echo -e "Маска пользовательских IP: ${BLUE}$CURRENT_WG_DEFAULT_ADDRESS${NC}"
 echo ""
-echo "Адрес входа в веб-интерфейс WireGuard после установки: http://$CURRENT_WG_HOST:51821"
-echo "Адрес входа в веб-интерфейс AdGuardHome после установки (только когда подключитесь к сети WireGuard!!!): http://$CURRENT_WG_DEFAULT_DNS"
+echo -e "Адрес входа в веб-интерфейс WireGuard после установки: ${YELLOW}http://$CURRENT_WG_HOST:51821${NC}"
+echo -e "Адрес входа в веб-интерфейс AdGuardHome после установки (только когда подключитесь к сети WireGuard!!!): ${YELLOW}http://$CURRENT_WG_DEFAULT_DNS${NC}"
 echo ""
 echo ""
 
