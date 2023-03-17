@@ -1,4 +1,3 @@
-```bash
 #!/bin/bash
 
 RED='\033[0;31m'
@@ -52,4 +51,3 @@ done
 
 echo -e "${YELLOW}Загрузка и запуск завершены.${NC}"
 echo -e "${GREEN}http://openode.ru${NC}"
-```
