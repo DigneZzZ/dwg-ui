@@ -161,15 +161,15 @@ hashed_password=$(htpasswd -nbB $username "$password" | cut -d ":" -f 2)
 hashed_password=$(echo "$hashed_password" | sed -e 's/[\/&]/\\&/g')
 
 # Проверяем наличие файла AdGuardHome.yaml и его доступность для записи
-if [ ! -w "/conf/AdGuardHome.yaml" ]; then
-  echo -e "${RED}Файл /conf/AdGuardHome.yaml не существует или не доступен для записи.${NC}" >&2
+if [ ! -w "conf/AdGuardHome.yaml" ]; then
+  echo -e "${RED}Файл conf/AdGuardHome.yaml не существует или не доступен для записи.${NC}" >&2
   exit 1
 fi
 
 # Записываем связку логина и зашифрованного пароля в файл conf/AdGuardHome.yaml
 if 
-#  sed -i "s/\(name: $username\).*\(password: \).*/\1\n\2$hashed_password/" /conf/AdGuardHome.yaml 
-  sed -i -E "s/- name: .*/- name: $username/g" /conf/AdGuardHome.yaml
+#  sed -i "s/\(name: $username\).*\(password: \).*/\1\n\2$hashed_password/" conf/AdGuardHome.yaml 
+  sed -i -E "s/- name: .*/- name: $username/g" conf/AdGuardHome.yaml
  
 then
   # Выводим сообщение об успешной записи связки логина и пароля в файл
