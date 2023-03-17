@@ -6,88 +6,55 @@ BLUE='\033[0;34m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-# Определение дистрибутива Linux и его версии
-if [ -f /etc/lsb-release ]; then
-    . /etc/lsb-release
-    OS=$DISTRIB_ID
-    VER=$DISTRIB_RELEASE
-elif [ -f /etc/debian_version ]; then
-    OS=Debian
-    VER=$(cat /etc/debian_version)
-else
-    OS=$(uname -s)
-    VER=$(uname -r)
+# Проверяем, выполняется ли скрипт от имени пользователя root
+if [ "$EUID" -ne 0 ]
+  then echo "Запустите скрипт с правами root"
+  exit
 fi
 
-# Проверка наличия Docker
-if ! command -v docker &> /dev/null
-then
-    read -p "Docker не найден. Установить Docker? (y/n) " INSTALL_DOCKER
-    if [ "$INSTALL_DOCKER" == "y" ]; then
-        # Установка Docker CE на основе дистрибутива Linux и его версии
-        if [ $OS == "Ubuntu" ] && [ $VER == "20.04" ]; then
-            # Установка Docker CE для Ubuntu 20.04
-            apt-get update
-            apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release 
-            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor  -o /usr/share/keyrings/docker-archive-keyring.gpg
-            echo \
-              "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-              $(lsb_release -cs) stable" | tee  /etc/apt/sources.list.d/docker.list > /dev/null
-            apt-get update
-            apt-get install -y docker docker-ce-cli containerd.io
-        elif [ $OS == "Ubuntu" ] && [ $VER == "22.04" ]; then
-            # Установка Docker CE для Ubuntu 22.04
-            apt-get update
-            apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
-            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor  -o /usr/share/keyrings/docker-archive-keyring.gpg
-            echo \
-              "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-              $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-            apt-get update
-            apt-get install -y docker docker-ce-cli containerd.io
-        elif [ $OS == "Debian" ] && [ $VER == "11" ]; then
-            # Установка Docker CE для Debian 11
-            apt-get update
-            apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
-            curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor  -o /usr/share/keyrings/docker-archive-keyring.gpg
-            echo \
-              "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
-              $(lsb_release -cs) stable" | tee  /etc/apt/sources.list.d/docker.list > /dev/null
-            apt-get update
-            apt-get install -y docker docker-ce-cli containerd.io
-        elif [ $OS == "Debian" ] && [ $VER == "10" ]; then
-            # Установка Docker CE для Debian 10
-            apt-get update
-            apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
-            curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add  -
-            add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
-            apt-get update
-            apt-get install -y docker docker-ce-cli containerd.io
-        else
-            echo "Дистрибутив Linux и/или его версия не поддерживается."
-            exit 1
-        fi
-    fi
+# Проверяем, установлен ли Docker
+if [ -x "$(command -v docker)" ]; then
+    echo "Docker уже установлен"
 else
-    echo "Docker уже установлен."
+    # Проверяем, какое распределение используется, и устанавливаем необходимые зависимости
+    if [ -f /etc/debian_version ]; then
+        apt-get update
+        apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+    elif [ -f /etc/redhat-release ]; then
+        dnf install -y dnf-plugins-core
+        dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+        dnf install -y curl
+    else
+        echo "Неподдерживаемое распределение"
+        exit
+    fi
+
+    # Устанавливаем Docker
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    sh get-docker.sh
+
+    # Запускаем и включаем службу Docker
+    systemctl start docker
+    systemctl enable docker
 fi
 
-# Проверка наличия Docker Compose
-if ! command -v docker-compose &> /dev/null
-then
-    read -p "Docker Compose не найден. Установить Docker Compose? (y/n) " INSTALL_COMPOSE
-    if [ "$INSTALL_COMPOSE" == "y" ]; then
-        # Установка Docker Compose
-        curl -L --fail https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
-    fi
+# Проверяем, установлен ли Docker Compose
+if [ -x "$(command -v docker-compose)" ]; then
+    echo "Docker Compose уже установлен"
 else
-    read -p "Docker Compose уже установлен. Хотите переустановить? (y/n) " REINSTALL_COMPOSE
-    if [ "$REINSTALL_COMPOSE" == "y" ]; then
-        # Удаление Docker Compose
-        rm /usr/local/bin/docker-compose
-        # Установка Docker Compose
-        curl -L --fail https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
-    fi
+    # Устанавливаем Docker Compose
+    curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+fi
+
+# Проверяем, хочет ли пользователь сбросить Docker Compose
+if [ -x "$(command -v docker-compose)" ]; then
+    read -p "Docker Compose уже установлен. Хотите сбросить его? (y/n) " reset_docker_compose
+    case $reset_docker_compose in
+        [Yy]* ) rm /usr/local/bin/docker-compose && curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose;;
+        [Nn]* ) exit;;
+        * ) echo "Ответьте 'y' или 'n'.";;
+    esac
 fi
 
 if ! command -v nano &> /dev/null
