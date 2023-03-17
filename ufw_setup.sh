@@ -74,6 +74,31 @@ else
   fi
 fi
 
+# Предлагаем пользователю добавить разрешенные порты для других сервисов
+echo "Добавить разрешенные порты для других сервисов? (y/n)"
+read add_additional_ports
+
+if [[ "$add_additional_ports" =~ ^(y|Y) ]]; then
+  # Список популярных сервисов
+  services=("HTTP" "HTTPS" "FTP" "SMTP" "MySQL")
+
+  for service in "${services[@]}"
+  do
+    echo "Введите порт для сервиса $service:"
+    read port
+    if grep -q "Ubuntu" /etc/os-release; then
+      sudo ufw allow $port/tcp
+    else
+      sudo firewall-cmd --add-port=$port/tcp --permanent
+      sudo firewall-cmd --reload
+    fi
+  done
+
+  echo -e "${GREEN}Разрешенные порты для сервисов добавлены.${NC}"
+else
+  echo -e "${GREEN}Настройка firewall завершена.${NC}"
+fi
+
 # Включаем firewall
 if grep -q "Ubuntu" /etc/os-release; then
   sudo ufw enable
