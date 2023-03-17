@@ -216,7 +216,6 @@ else
     echo "Файл /etc/ssh/sshd_config не найден."
 fi
 
-#!/bin/bash
 
 # Проверка наличия установленного ufw
 if [ -x "$(command -v ufw)" ]; then
