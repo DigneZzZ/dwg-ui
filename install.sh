@@ -162,6 +162,7 @@ if [ -z "$username" ]; then
   username="admin"
 fi
 
+
 # Запрашиваем у пользователя пароль
 while true; do
   echo -e "${YELLOW}Введите пароль (если нажать Enter, пароль будет задан по умолчанию a1234):${NC}"  
@@ -170,7 +171,7 @@ while true; do
     password="a1234"
     break
   fi
-  if [[ "$password" =~ [^a-zA-Z0-9] ]]; then
+  if ! [[ "$password" =~ [^a-zA-Z0-9] ]]; then
     break
   else
     echo -e "${RED}Пароль должен содержать латинские буквы верхнего и нижнего регистра, цифры.${NC}"
