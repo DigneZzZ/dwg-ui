@@ -129,9 +129,6 @@ if ! [ -x "$(command -v htpasswd)" ]; then
    apt-get install apache2-utils -y
 fi
 
-# Запрашиваем у пользователя логин
-echo -e "${YELLOW}Введите логин (по умолчанию admin):${NC}" 
-read username
 
 # Если логин не введен, устанавливаем логин по умолчанию "admin"
 while true; do
