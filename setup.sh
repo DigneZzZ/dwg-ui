@@ -21,14 +21,14 @@ IFS=',' read -ra selected <<< "$choices"
 for choice in "${selected[@]}"; do
     case $choice in
         1)
-            if curl -sSL https://raw.githubusercontent.com/DigneZzZ/ad-wireguard/main/ssh.sh && chmod +x ssh.sh && sh ssh.sh; then
+            if curl -O https://raw.githubusercontent.com/DigneZzZ/ad-wireguard/main/ssh.sh && chmod +x ssh.sh && sh ssh.sh; then
                 echo -e "${GREEN}Файл ssh.sh загружен и запущен успешно.${NC}"
             else
                 echo -e "${RED}Не удалось загрузить или запустить файл example_script.sh.${NC}"
             fi
             ;;
         2)
-            if curl -sSLO https://raw.githubusercontent.com/DigneZzZ/ad-wireguard/main/ufw-setup.sh -o ufw-setup.sh && chmod +x ufw-setup.sh && sh ufw-setup.sh; then
+            if curl -O https://raw.githubusercontent.com/DigneZzZ/ad-wireguard/main/ufw-setup.sh -o ufw-setup.sh && chmod +x ufw-setup.sh && sh ufw-setup.sh; then
                 echo -e "${GREEN}Файл ufw-setup.sh загружен и запущен успешно.${NC}"
             else
                 echo -e "${RED}Не удалось загрузить или запустить файл ufw-setup.sh.${NC}"
@@ -36,7 +36,7 @@ for choice in "${selected[@]}"; do
             ;;
             
         3)
-            if curl -sSLO https://raw.githubusercontent.com/DigneZzZ/ad-wireguard/main/ufw-docker.sh && chmod +x ufw-docker.sh && sh ufw-docker.sh; then
+            if curl -O https://raw.githubusercontent.com/DigneZzZ/ad-wireguard/main/ufw-docker.sh && chmod +x ufw-docker.sh && sh ufw-docker.sh; then
                 echo -e "${GREEN}Файл ufw-docker.sh загружен и запущен успешно.${NC}"
             else
                 echo -e "${RED}Не удалось загрузить или запустить файл ufw-docker.sh.${NC}"
