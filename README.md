@@ -1,4 +1,4 @@
-# DWG Project - Docker WireGuard - Проект одного скрипта 
+# DWG Project - Bash Docker WireGuard (BDWG) - Проект одного скрипта 
 ## Представляю вам лучшую сборку для самой быстрой настройки VPN сервера на WireGuard
 ## **Ad-WireGuard** = AdGuard with DoH DNS +  Wireguard with UI (wg-easy) + Unbound 
 
