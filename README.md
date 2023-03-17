@@ -108,6 +108,10 @@ https://easylist-downloads.adblockplus.org/bitblock.txt
 https://easylist-downloads.adblockplus.org/cntblock.txt
 ### EasyList
 https://easylist-downloads.adblockplus.org/easylist.txt
+### Доп список от Шакала
+https://schakal.ru/hosts/alive_hosts_ru_com.txt
+### файл с разблокированными r.mail.ru и graph.facebook.com
+https://schakal.ru/hosts/hosts_mail_fb.txt
 
 # Upstream DNS-Servers
 ### About default DNS
