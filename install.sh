@@ -154,8 +154,7 @@ if ! [ -x "$(command -v htpasswd)" ]; then
 fi
 
 # Запрашиваем у пользователя логин
-echo -e "${YELLOW}Введите логин (по умолчанию admin):${NC}"
-read username
+echo -e "${YELLOW}Введите логин (по умолчанию admin):${NC}" read username
 
 # Если логин не введен, устанавливаем логин по умолчанию "admin"
 if [ -z "$username" ]; then
@@ -164,8 +163,7 @@ fi
 
 # Запрашиваем у пользователя пароль
 while true; do
-  echo -e "${YELLOW}Введите пароль:${NC}"
-  read -s password
+  echo -e "${YELLOW}Введите пароль (если нажать Enter, пароль будет задан по умолчанию a1234):${NC}"  read password
   if [ -z "$password" ]; then
     password="a1234"
     break
