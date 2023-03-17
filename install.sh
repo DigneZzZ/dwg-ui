@@ -34,7 +34,7 @@ then
               "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
               $(lsb_release -cs) stable" | tee --force-confmiss /etc/apt/sources.list.d/docker.list > /dev/null
             apt-get update
-            apt-get install -y docker-ce docker-ce-cli containerd.io
+            apt-get install -y docker docker-ce-cli containerd.io
         elif [ $OS == "Ubuntu" ] && [ $VER == "22.04" ]; then
             # Установка Docker CE для Ubuntu 22.04
             apt-get update
@@ -44,7 +44,7 @@ then
               "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
               $(lsb_release -cs) stable" | tee --force-confmiss /etc/apt/sources.list.d/docker.list > /dev/null
             apt-get update
-            apt-get install -y docker-ce docker-ce-cli containerd.io
+            apt-get install -y docker docker-ce-cli containerd.io
         elif [ $OS == "Debian" ] && [ $VER == "11" ]; then
             # Установка Docker CE для Debian 11
             apt-get update
@@ -54,7 +54,7 @@ then
               "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
               $(lsb_release -cs) stable" | tee --force-confmiss /etc/apt/sources.list.d/docker.list > /dev/null
             apt-get update
-            apt-get install -y docker-ce docker-ce-cli containerd.io
+            apt-get install -y docker docker-ce-cli containerd.io
         elif [ $OS == "Debian" ] && [ $VER == "10" ]; then
             # Установка Docker CE для Debian 10
             apt-get update
@@ -62,7 +62,7 @@ then
             curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -y -
             add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
             apt-get update
-            apt-get install -y docker-ce docker-ce-cli containerd.io
+            apt-get install -y docker docker-ce-cli containerd.io
         else
             echo "Дистрибутив Linux и/или его версия не поддерживается."
             exit 1
@@ -154,7 +154,8 @@ if ! [ -x "$(command -v htpasswd)" ]; then
 fi
 
 # Запрашиваем у пользователя логин
-echo -e "${YELLOW}Введите логин (по умолчанию admin):${NC}" read username
+echo -e "${YELLOW}Введите логин (по умолчанию admin):${NC}" 
+read username
 
 # Если логин не введен, устанавливаем логин по умолчанию "admin"
 if [ -z "$username" ]; then
@@ -163,7 +164,8 @@ fi
 
 # Запрашиваем у пользователя пароль
 while true; do
-  echo -e "${YELLOW}Введите пароль (если нажать Enter, пароль будет задан по умолчанию a1234):${NC}"  read password
+  echo -e "${YELLOW}Введите пароль (если нажать Enter, пароль будет задан по умолчанию a1234):${NC}"  
+  read password
   if [ -z "$password" ]; then
     password="a1234"
     break
