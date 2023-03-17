@@ -1,28 +1,33 @@
 #!/bin/bash
 
+# Определение цветов
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
 # Определение операционной системы
 if grep -q "Ubuntu 22.04" /etc/os-release; then
-  echo "Установка UFW и NTP на Ubuntu 22.04"
+  echo -e "${GREEN}Установка UFW и NTP на Ubuntu 22.04${NC}"
   sudo apt update
   sudo apt install ufw -y
   sudo apt install ntp -y
 elif grep -q "Ubuntu 20.04" /etc/os-release; then
-  echo "Установка UFW и NTP на Ubuntu 20.04"
+  echo -e "${GREEN}Установка UFW и NTP на Ubuntu 20.04${NC}"
   sudo apt update
   sudo apt install ufw -y
   sudo apt install ntp -y
 elif grep -q "Debian GNU/Linux 11" /etc/os-release; then
-  echo "Установка UFW и NTP на Debian 11"
+  echo -e "${GREEN}Установка UFW и NTP на Debian 11${NC}"
   sudo apt update
   sudo apt install ufw -y
   sudo apt install ntp -y
 elif grep -q "Debian GNU/Linux 10" /etc/os-release; then
-  echo "Установка UFW и NTP на Debian 10"
+  echo -e "${GREEN}Установка UFW и NTP на Debian 10${NC}"
   sudo apt update
   sudo apt install ufw -y
   sudo apt install ntp -y
 elif grep -q "CentOS Linux 8" /etc/os-release; then
-  echo "Установка firewalld и chrony на CentOS 8"
+  echo -e "${GREEN}Установка firewalld и chrony на CentOS 8${NC}"
   sudo dnf install firewalld -y
   sudo systemctl start firewalld
   sudo systemctl enable firewalld
@@ -30,7 +35,7 @@ elif grep -q "CentOS Linux 8" /etc/os-release; then
   sudo systemctl start chronyd
   sudo systemctl enable chronyd
 elif grep -q "CentOS Linux 9" /etc/os-release; then
-  echo "Установка firewalld и chrony на CentOS 9"
+  echo -e "${GREEN}Установка firewalld и chrony на CentOS 9${NC}"
   sudo dnf install firewalld -y
   sudo systemctl start firewalld
   sudo systemctl enable firewalld
@@ -38,7 +43,7 @@ elif grep -q "CentOS Linux 9" /etc/os-release; then
   sudo systemctl start chronyd
   sudo systemctl enable chronyd
 else
-  echo "Не удалось определить операционную систему"
+  echo -e "${RED}Не удалось определить операционную систему${NC}"
   exit 1
 fi
 
@@ -72,6 +77,8 @@ fi
 # Включаем firewall
 if grep -q "Ubuntu" /etc/os-release; then
   sudo ufw enable
+  echo -e "${GREEN}Настройка UFW завершена.${NC}"
 else
   sudo systemctl enable firewalld
+  echo -e "${GREEN}Настройка firewalld завершена.${NC}"
 fi
