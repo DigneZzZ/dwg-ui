@@ -10,10 +10,18 @@ install_fail2ban() {
     sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
 
     # настройка конфигурационного файла
-    sudo sed -i 's/^bantime  = 600/bantime  = 3600/' /etc/fail2ban/jail.local
-    sudo sed -i 's/^maxretry = 3/maxretry = 5/' /etc/fail2ban/jail.local
+    sudo sed -i 's/^bantime  = 600/bantime  = 7776000/' /etc/fail2ban/jail.local
+    sudo sed -i 's/^maxretry = 5/maxretry = 3/' /etc/fail2ban/jail.local
     sudo sed -i 's/^destemail = root@localhost/destemail = admin@example.com/' /etc/fail2ban/jail.local
     sudo sed -i 's/^action = %(action_)s/action = %(action_mwl)s/' /etc/fail2ban/jail.local
+
+    # добавление сервиса для мониторинга ssh
+    sudo echo "[ssh]" >> /etc/fail2ban/jail.local
+    sudo echo "enabled = true" >> /etc/fail2ban/jail.local
+    sudo echo "port = ssh" >> /etc/fail2ban/jail.local
+    sudo echo "filter = sshd" >> /etc/fail2ban/jail.local
+    sudo echo "logpath = /var/log/auth.log" >> /etc/fail2ban/jail.local
+    sudo echo "maxretry = 3" >> /etc/fail2ban/jail.local
 }
 
 # проверка установки fail2ban
