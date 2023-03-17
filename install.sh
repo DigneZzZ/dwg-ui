@@ -8,13 +8,13 @@ NC='\033[0m'
 
 # Проверяем, выполняется ли скрипт от имени пользователя root
 if [ "$EUID" -ne 0 ]
-  then echo "Запустите скрипт с правами root"
+  then echo -e "${RED}Запустите скрипт с правами root${NC}"
   exit
 fi
 
 # Проверяем, установлен ли Docker
 if [ -x "$(command -v docker)" ]; then
-    echo "Docker уже установлен"
+    echo -e "${GREEN}Docker уже установлен${NC}"
 else
     # Проверяем, какое распределение используется, и устанавливаем необходимые зависимости
     if [ -f /etc/debian_version ]; then
@@ -25,7 +25,7 @@ else
         dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
         dnf install -y curl
     else
-        echo "Неподдерживаемое распределение"
+        echo -e "${RED}Неподдерживаемое распределение${NC}"
         exit
     fi
 
@@ -36,27 +36,29 @@ else
     # Запускаем и включаем службу Docker
     systemctl start docker
     systemctl enable docker
+
+    echo -e "${GREEN}Docker успешно установлен${NC}"
 fi
 
-# Проверяем, установлен ли Docker Compose
+# Устанавливаем Docker Compose
+LATEST_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep "tag_name" | cut -d '"' -f 4)
 if [ -x "$(command -v docker-compose)" ]; then
-    echo "Docker Compose уже установлен"
+    INSTALLED_VERSION=$(docker-compose version --short)
+    if [ "$LATEST_VERSION" == "$INSTALLED_VERSION" ]; then
+        echo -e "${GREEN}Установлена последняя версия Docker Compose${NC}"
+    else
+        echo -e "${YELLOW}Обнаружена устаревшая версия Docker Compose${NC}"
+        read -p "Хотите обновить Docker Compose? (y/n) " update_docker_compose
+        case $update_docker_compose in
+            [Yy]* ) sudo rm /usr/local/bin/docker-compose && sudo curl -L "https://github.com/docker/compose/releases/download/$LATEST_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose && echo -e "${GREEN}Docker Compose успешно обновлен${NC}";;
+            [Nn]* ) exit;;
+        esac
+    fi
 else
-    # Устанавливаем Docker Compose
-    curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    chmod +x /usr/local/bin/docker-compose
+    sudo curl -L "https://github.com/docker/compose/releases/download/$LATEST_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose && echo -e "${GREEN}Docker Compose успешно установлен${NC}"
 fi
 
-# Проверяем, хочет ли пользователь сбросить Docker Compose
-if [ -x "$(command -v docker-compose)" ]; then
-    read -p "Docker Compose уже установлен. Хотите сбросить его? (y/n) " reset_docker_compose
-    case $reset_docker_compose in
-        [Yy]* ) rm /usr/local/bin/docker-compose && curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose;;
-        [Nn]* ) exit;;
-        * ) echo "Ответьте 'y' или 'n'.";;
-    esac
-fi
-
+# Устанавливаем редактор Nano
 if ! command -v nano &> /dev/null
 then
     read -p "Хотите установить текстовый редактор Nano? (y/n) " INSTALL_NANO
