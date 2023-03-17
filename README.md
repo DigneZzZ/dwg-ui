@@ -28,6 +28,7 @@ apt update && apt install git -y && git clone https://github.com/dignezzz/ad-wir
 3. Wg-easy - интерактивный режим введения пароля для веб
 4. AdGuard Home - интерактивный режим создания пользователя и пароля (можно оставить стандартным)
 5. Unbound - все в стоке
+6. apache2-utils - необходим для генерации хэш-паролей
  
 ## Автор:
 
