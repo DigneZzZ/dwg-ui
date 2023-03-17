@@ -29,7 +29,7 @@
 Запусти команду на чистом сервере
 
 ```bash
-apt update && apt install git -y && git clone https://github.com/dignezzz/ad-wireguard.git && cd ad-wireguard && chmod +x install.sh && ./install.sh && cd 
+apt update && apt install git -y && git clone --force https://github.com/dignezzz/ad-wireguard.git && cd ad-wireguard && chmod +x install.sh && ./install.sh && cd 
 ```
 
 ## Что установится:
