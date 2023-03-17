@@ -85,7 +85,7 @@ while true; do
 
   if [[ "$WEBPASSWORD" =~ ^[[:alnum:]]+$ ]]; then
     # Записываем в файл новый пароль в кодировке UTF-8
-    sed -i -E "s/- PASSWORD=.*/- PASSWORD=$WEBPASSWORD/g" docker-compose.yml
+    sed -i -E "s/- PASSWORD=.*/- PASSWORD=\"$WEBPASSWORD\"/g" docker-compose.yml
     break
   else
     echo "Пароль должен состоять только из английских букв и цифр, без пробелов и специальных символов."
@@ -148,7 +148,7 @@ while true; do
 done
 
 # Генерируем хеш пароля с помощью htpasswd из пакета apache2-utils
-hashed_password=$(htpasswd -bnB $username $password | cut -d ":" -f 2)
+hashed_password=$(htpasswd -nbB $username '$password' | cut -d ":" -f 2)
 
 # Экранируем символы / и & в hashed_password
 hashed_password=$(echo "$hashed_password" | sed -e 's/[\/&]/\\&/g')
