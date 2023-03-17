@@ -170,7 +170,7 @@ fi
 if 
 #  sed -i "s/\(name: $username\).*\(password: \).*/\1\n\2$hashed_password/" conf/AdGuardHome.yaml 
   sed -i -E "s/- name: .*/- name: $username/g" conf/AdGuardHome.yaml
- 
+  sed -i -E "s/password: .*/password: $hashed_password/g" conf/AdGuardHome.yaml
 then
   # Выводим сообщение об успешной записи связки логина и пароля в файл
   echo -e "${GREEN}Связка логина и пароля успешно записана в файл conf/AdGuardHome.yaml${NC}"
