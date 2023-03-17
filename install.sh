@@ -161,7 +161,7 @@ hashed_password=$(htpasswd -nbB $username "$password" | cut -d ":" -f 2)
 hashed_password=$(echo "$hashed_password" | sed -e 's/[\/&]/\\&/g')
 
 # Записываем связку логина и зашифрованного пароля в файл conf/AdGuardHome.yaml
-sed -i "s/\(name: $username\).*\(password: \).*/\1\n\2$hashed_password/" conf/AdGuardHome.yaml
+sed -i "s/\(name: $username\).*\(password: \).*/\1\n\2$hashed_password/" /conf/AdGuardHome.yaml
 
 # Выводим сообщение об успешной записи связки логина и пароля в файл
 echo -e "${GREEN}Связка логина и пароля успешно записана в файл conf/AdGuardHome.yaml${NC}"
