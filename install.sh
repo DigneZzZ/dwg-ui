@@ -134,17 +134,26 @@ echo -e "${YELLOW}Введите логин (по умолчанию admin):${NC
 read username
 
 # Если логин не введен, устанавливаем логин по умолчанию "admin"
-if [ -z "$username" ]; then
-  username="admin"
-fi
-
+while true; do
+  echo -e "${YELLOW}Введите логин (только латинские буквы и цифры), если пропустить шаг будет задан логин admin:${NC}"  
+  read username
+  if [ -z "$username" ]; then
+    username="admin"
+    break
+  fi
+  if ! [[ "$username" =~ [^a-zA-Z0-9] ]]; then
+    break
+  else
+    echo -e "${RED}Логин должен содержать только латинские буквы и цифры.${NC}"
+  fi
+done
 
 # Запрашиваем у пользователя пароль
 while true; do
-  echo -e "${YELLOW}Введите пароль (если нажать Enter, пароль будет задан по умолчанию a1234):${NC}"  
+  echo -e "${YELLOW}Введите пароль (если нажать Enter, пароль будет задан по умолчанию admin):${NC}"  
   read password
   if [ -z "$password" ]; then
-    password="a1234"
+    password="admin"
     break
   fi
   if ! [[ "$password" =~ [^a-zA-Z0-9] ]]; then
