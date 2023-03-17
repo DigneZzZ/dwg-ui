@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Цвета текста
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
 # функция для установки fail2ban
 install_fail2ban() {
     # установка fail2ban
@@ -32,17 +38,17 @@ else
 fi
 
 # вывод приветственного сообщения
-echo "Добро пожаловать в скрипт установки fail2ban!"
+echo -e "${YELLOW}Добро пожаловать в скрипт установки fail2ban!${NC}"
 
 # запрос у пользователя о установке fail2ban
-read -p "Хотите установить fail2ban? (y/n): " install_fail2ban_response
+read -p $'\e[1;33m'"Хотите установить fail2ban? (y/n): "'\e[0m' install_fail2ban_response
 
 # обработка ответа пользователя
 if [[ "$install_fail2ban_response" =~ ^[Yy]$ ]]; then
     # установка fail2ban, если не установлен
     if [ "$fail2ban_installed" = false ]; then
         install_fail2ban
-        echo "fail2ban установлен и настроен!"
+        echo -e "${GREEN}fail2ban установлен и настроен!${NC}"
     else
         echo "fail2ban уже установлен"
     fi
@@ -50,4 +56,4 @@ else
     echo "Установка fail2ban пропущена."
 fi
 
-echo "Спасибо за использование скрипта установки fail2ban!"
+echo -e "${YELLOW}Спасибо за использование скрипта установки fail2ban!${NC}"
