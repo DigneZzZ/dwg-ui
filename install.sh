@@ -150,6 +150,9 @@ done
 # Генерируем хеш пароля с помощью htpasswd из пакета apache2-utils
 hashed_password=$(htpasswd -bnB $username $password | cut -d ":" -f 2)
 
+# Экранируем символы / и & в hashed_password
+hashed_password=$(echo "$hashed_password" | sed -e 's/[\/&]/\\&/g')
+
 # Записываем связку логина и зашифрованного пароля в файл conf/AdGuardHome.yaml
 sed -i "s/\(name: $username\).*\(password: \).*/\1\n\2$hashed_password/" conf/AdGuardHome.yaml
 
