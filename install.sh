@@ -156,3 +156,40 @@ echo ""
 echo "Адрес входа в веб-интерфейс WireGuard после установки: http://$CURRENT_WG_HOST:51821"
 echo "Адрес входа в веб-интерфейс AdGuardHome после установки (только когда подключитесь к сети WireGuard!!!): http://$CURRENT_WG_DEFAULT_DNS"
 echo ""
+
+
+# Проверка наличия файла sshd_config
+if [ -f "/etc/ssh/sshd_config" ]; then
+    read -p "Хотите изменить порт подключения к SSH? (y/n) " CHANGE_SSH_PORT
+    if [ "$CHANGE_SSH_PORT" == "y" ]; then
+        # Запрос нового порта
+        read -p "Введите новый порт для SSH: " NEW_SSH_PORT
+        # Замена порта в файле sshd_config
+        sed -i "s/#Port 22/Port $NEW_SSH_PORT/g" /etc/ssh/sshd_config
+        # Перезапуск sshd
+        systemctl restart sshd
+    fi
+else
+    echo "Файл /etc/ssh/sshd_config не найден."
+fi
+
+# Проверка наличия UFW
+if ! command -v ufw &> /dev/null
+then
+    read -p "UFW не найден. Установить UFW? (y/n) " INSTALL_UFW
+    if [ "$INSTALL_UFW" == "y" ]; then
+        # Установка UFW
+        apt-get update
+        apt-get install -y ufw
+        # Открытие портов
+        ufw allow ssh
+        ufw allow http
+        ufw allow https
+        ufw enable
+    fi
+else
+    echo "UFW уже установлен."
+    # Проверка открытых портов
+    echo "Открытые порты:"
+    ufw status
+fi
