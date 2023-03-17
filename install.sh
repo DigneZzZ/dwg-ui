@@ -51,7 +51,7 @@ if [ -x "$(command -v docker-compose)" ]; then
     read -p "Хотите обновить Docker Compose? (y/n) " update_docker_compose
     case $update_docker_compose in
       [Yy]* ) 
-        sudo rm /usr/local/bin/docker-compose && sudo curl -L "https://github.com/docker/compose/releases/download/$LATEST_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose && echo -e "${GREEN}Docker Compose успешно обновлен${NC}"
+        rm /usr/local/bin/docker-compose &&  curl -L "https://github.com/docker/compose/releases/download/$LATEST_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose &&  chmod +x /usr/local/bin/docker-compose && echo -e "${GREEN}Docker Compose успешно обновлен${NC}"
         ;;
       [Nn]* ) 
         echo -e "${YELLOW}Продолжаем выполнение скрипта без обновления Docker Compose${NC}"
@@ -125,8 +125,8 @@ echo ""
 # Устанавливаем apache2-utils, если она не установлена
 if ! [ -x "$(command -v htpasswd)" ]; then
   echo -e "${RED}Установка apache2-utils...${NC}" >&2
-  sudo apt-get update
-  sudo apt-get install apache2-utils -y
+   apt-get update
+   apt-get install apache2-utils -y
 fi
 
 # Запрашиваем у пользователя логин
