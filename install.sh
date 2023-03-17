@@ -291,7 +291,7 @@ else
   if [ "$install_ufw" = "y" ]; then
     # Установка ufw
     sudo apt-get update
-    sudo apt-get install ufw
+    sudo apt-get install ufw -y
 
     # Получить список открытых портов с помощью netstat и фильтрацией через awk и sort
     ports=$(sudo netstat -lnp | awk '/^tcp/ {if ($NF != "LISTENING") next; split($4, a, ":"); print a[2]}' | sort -u)
@@ -306,7 +306,7 @@ else
     done
 
     # Сохранение правил и включение ufw
-    sudo ufw enable
+    sudo ufw enable -y
     echo -e "${GREEN}UFW был успешно установлен и настроен на открытие используемых портов.${NC}"
   else
     echo "Установка завершена без изменений."
