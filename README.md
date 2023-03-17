@@ -3,8 +3,8 @@ Combination WireGuard (wg-easy latest) + Adguard Home + Unbound (Latest)
 
 Here is the start of combination
 # Requirings:
-* Docker (include in install.sh for Debian 10-11, Ubuntu 20-22.04
-* Docker-compose
+* Docker (include in install.sh for Debian 10-11, Ubuntu 20-22.04)
+* Docker-compose (include in install.sh for Debian 10-11, Ubuntu 20-22.04)
 
 These confinguration of AdGuard include DNS-over-HTTPS (DoH) via Cloudflare service by using DNS: https://cloudflare-dns.com/dns-query
 Fow query to CF-DNS using Unbound. This is some type of DNS forwarding.
@@ -12,6 +12,16 @@ Fow query to CF-DNS using Unbound. This is some type of DNS forwarding.
 Recomendation VPS Hosting with 10% Discount: 	[VDSina.ru](https://vdsina.ru/?partner=rwmhc7jbcg)
 
 
+# Quick Install
+1. Clone the git and edit install-script
+## CLEAR SERVER:
+```bash
+apt update && apt install nano -y && apt install git -y && git clone https://github.com/dignezzz/ad-wireguard.git && cd ad-wireguard && chmod +x install.sh && ./install.sh && cd 
+```
+## INSTALL Docker, Docker-Compose and Ad-WireGuard
+```bash
+git clone https://github.com/dignezzz/ad-wireguard.git && cd ad-wireguard && chmod +x install.sh && ./install.sh && cd 
+```
 
 ## Autors:
 
