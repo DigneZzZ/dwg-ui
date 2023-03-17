@@ -1,5 +1,10 @@
 #!/bin/bash
 
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+RED='\033[0;31m'
+NC='\033[0m'
+
 # Определение дистрибутива Linux и его версии
 if [ -f /etc/lsb-release ]; then
     . /etc/lsb-release
@@ -138,15 +143,16 @@ echo ""
 echo ""
 
 
+
 # Устанавливаем apache2-utils, если она не установлена
 if ! [ -x "$(command -v htpasswd)" ]; then
-  echo 'Установка apache2-utils...' >&2
+  echo -e "${RED}Установка apache2-utils...${NC}" >&2
   sudo apt-get update
   sudo apt-get install apache2-utils -y
 fi
 
 # Запрашиваем у пользователя логин
-echo "Введите логин (по умолчанию admin):"
+echo -e "${YELLOW}Введите логин (по умолчанию admin):${NC}"
 read username
 
 # Если логин не введен, устанавливаем логин по умолчанию "admin"
@@ -155,8 +161,19 @@ if [ -z "$username" ]; then
 fi
 
 # Запрашиваем у пользователя пароль
-echo "Введите пароль:"
-read password
+while true; do
+  echo -e "${YELLOW}Введите пароль:${NC}"
+  read -s password
+  if [ -z "$password" ]; then
+    password="a1234"
+    break
+  fi
+  if [[ "$password" =~ [^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\-\+\.\,\;\:\<\>\?\[\]\{\}\_\=\|\\\/] ]]; then
+    break
+  else
+    echo -e "${RED}Пароль должен содержать латинские буквы верхнего и нижнего регистра, цифры и специальные символы.${NC}"
+  fi
+done
 
 # Генерируем хеш пароля с помощью htpasswd из пакета apache2-utils
 hashed_password=$(htpasswd -bnB $username $password | cut -d ":" -f 2)
@@ -165,12 +182,13 @@ hashed_password=$(htpasswd -bnB $username $password | cut -d ":" -f 2)
 sed -i "s/\(name: $username\).*\(password: \).*/\1\n\2$hashed_password/" conf/AdGuardHome.yaml
 
 # Выводим сообщение об успешной записи связки логина и пароля в файл
-echo "Связка логина и пароля успешно записана в файл conf/AdGuardHome.yaml"
+echo -e "${GREEN}Связка логина и пароля успешно записана в файл conf/AdGuardHome.yaml${NC}"
+
 
 # Выводим связку логина и пароля в консоль
 echo "Ниже представлены логин и пароль для входа в AdGuardHome"
-echo "Логин: $username"
-echo "Пароль: $password"
+echo -e "${GREEN}Логин: $username${NC}"
+echo -e "${GREEN}Пароль: $password${NC}"
 
 # Запускаем docker-compose
 docker-compose up -d
