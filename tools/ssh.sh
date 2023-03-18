@@ -21,12 +21,16 @@ if [ -z "$current_port" ]; then
     current_port=22
 fi
 
-# Определяем, хочет ли пользователь изменить порт
-read -p "${YELLOW}Текущий порт SSH: $current_port. Хотите изменить порт? (y/n): ${NC}" change_port
+# Выводим текст с подсветкой цветом
+printf "${YELLOW}Текущий порт SSH: %s. Хотите изменить порт? (y/n): ${NC}" "$current_port"
+
+# Запрашиваем ввод пользователя
+read -e change_port
 
 if [ "$change_port" == "y" ]; then
     # Запрос нового порта
-    read -p "${YELLOW}Введите новый порт (допустимый диапазон: 1024-65535): ${NC}" new_port
+    printf "${YELLOW}Введите новый порт (допустимый диапазон: 1024-65535): ${NC}"
+    read -e new_port
 
     # Проверка, что введено число
     if ! [[ "$new_port" =~ ^[0-9]+$ ]]; then
@@ -62,4 +66,3 @@ else
     echo -e "${RED}Неверный ответ. Пожалуйста, введите 'y' или 'n'.${NC}"
     exit 1
 fi
-
