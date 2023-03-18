@@ -207,5 +207,5 @@ echo "Ниже представлены логин и пароль для вхо
 echo -e "Логин:${BLUE} $username${NC}"
 echo -e "Пароль:${BLUE} $password${NC}"
 echo ""
-
+echo -e "${GREEN}Заходите на мой форум: https://openode.ru${NC}"
 
