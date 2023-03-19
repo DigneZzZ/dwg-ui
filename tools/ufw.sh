@@ -71,30 +71,29 @@ if  -x "$(command -v firewall-cmd)" ; then
       firewall-cmd --add-port=$customsshport/tcp --permanent
     fi
 
-    # Предлагаем пользователю добавить разрешенные порты для других сервисов
-    echo -e "Добавить разрешенные порты для других сервисов? (y/n)"
+   # Предлагаем пользователю добавить разрешенные порты для других сервисов
+echo -e "Добавить разрешенные порты для других сервисов? (y/n)"
+read add_additional_ports
 
-    read addadditionalports
+if [[ "$add_additional_ports" =~ ^(y|Y) ]]; then
+  # Список популярных сервисов и портов
+  services=("HTTP:80" "HTTPS:443" "FTP:20,21" "SMTP:25" "MySQL:3306")
 
-    if [ "$add_additional_ports" =~ ^(y|Y) ]; then
-      # Список популярных сервисов и портов
-      services=("HTTP:80" "HTTPS:443" "FTP:20,21" "SMTP:25" "MySQL:3306")
+  for service in "${services[@]}"
+  do
+    servicename=$(echo $service | cut -d':' -f1)
+    ports=$(echo $service | cut -d':' -f2)
 
-      for service in "${services@}"
+    echo -e "Разрешить доступ к портам ${YELLOW}$ports${NC} для сервиса ${YELLOW}$servicename${NC}? (y/n)"
+    read allowservice
+
+    if [[ "$allowservice" =~ ^(y|Y) ]]; then
+      for port in $(echo $ports | sed "s/,/ /g")
       do
-        servicename=$(echo $service | cut -d':' -f1)
-        ports=$(echo $service | cut -d':' -f2)
-
-        echo -e "Разрешить доступ к портам ${YELLOW}$ports${NC} для сервиса ${YELLOW}$servicename${NC}? (y/n)"
-        read allowservice
-
-        if [[ "$allowservice" =~ ^(y|Y) ]]; then
-          for port in $(echo $ports | sed "s/,/ /g")
-          do
-            firewall-cmd --add-port=$port/tcp --permanent
-          done
-        fi
+        firewall-cmd --add-port=$port/tcp --permanent
       done
+    fi
+  done
 
       # Перезагружаем firewalld
       systemctl restart firewalld
