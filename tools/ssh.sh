@@ -66,3 +66,4 @@ else
     echo -e "${RED}Неверный ответ. Пожалуйста, введите 'y' или 'n'.${NC}"
     exit 1
 fi
+    echo -e "${YELLOW}Регистрируйтесь на моём форуме: https://openode.ru${NC}"
