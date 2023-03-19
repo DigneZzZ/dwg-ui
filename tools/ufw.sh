@@ -38,7 +38,7 @@ printf "${YELLOW}Выберите сервисы, к которым нужно �
 printf "${YELLOW}1. HTTP (порт 80)\n2. HTTPS (порт 443)\n3. MySQL (порт 3306)\n4. PostgreSQL (порт 5432)\n5. FTP (порты 20 и 21)\n6. SMTP (порты 25 и 587)\n7. DNS (порты 53/tcp и 53/udp)\n8. NFS (порты 111 и 2049)\n9. Samba (порты 139 и 445)\n10. Все вышеперечисленные сервисы${NC}\n\n"
 
 # запрос выбора сервисов
-printf "${YELLOW}Введите номера сервисов через запятую (например, 1,3,5): ${NC}"
+printf "${YELLOW}Введите номера сервисов через запятую (например, рекомендую: 1,2,3,7): ${NC}"
 read SERVICES
 
 # разрешение соединений для выбранных сервисов
@@ -108,21 +108,9 @@ fi
 sudo ufw enable
 
 # вывод информации об открытых портах
-#printf "${GREEN}\nОткрытые порты:${NC}\n"
-#sudo ufw status numbered | grep -Eo "([0-9]+/[a-z]+).+?ALLOW.+?Anywhere" | sed -E "s/([0-9]+\/[a-z]+).+?ALLOW.+?Anywhere/\1/g"
-
-# вывод информации об открытых портах
 printf "${GREEN}\nОткрытые порты:${NC}\n"
-sudo ufw status numbered | grep -Eo "([0-9]+/[a-z]+).+?ALLOW.+?Anywhere" | sed -E "s/([0-9]+\/[a-z]+).+?ALLOW.+?Anywhere/\1/g" | while read -r line; do
-    PORT=$(echo "$line" | cut -d'/' -f1)
-    PROTO=$(echo "$line" | cut -d'/' -f2)
+sudo ufw status #numbered | grep -Eo "([0-9]+/[a-z]+).+?ALLOW.+?Anywhere" | sed -E "s/([0-9]+\/[a-z]+).+?ALLOW.+?Anywhere/\1/g"
 
-    # Проверяем, открыт ли порт для ipv6
-    if sudo ufw status numbered | grep -q "$PORT/.*$PROTO.*ALLOW.*Anywhere (v6)"; then
-        printf "${YELLOW}$PORT/$PROTO (v6)${NC}\n"
-    else
-        printf "$line\n"
-    fi
-done
+
 
     printf "${GREEN}Заходите на мой форум: https://openode.ru${NC}\n"
