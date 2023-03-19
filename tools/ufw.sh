@@ -20,15 +20,19 @@ else
     sudo apt update
     sudo apt install ufw -y
 fi
-    # Считываем ssh порт из файла sshd_config
-    SSH_PORT=$(grep -oP '(?<=Port )\d+' /etc/ssh/sshd_config)
+ # Считываем ssh порт из файла sshd_config
+SSH_PORT=$(grep -oP '(?<=Port )\d+' /etc/ssh/sshd_config)
 
-# настройка правил фаервола
-sudo ufw default deny incoming # отклонять все входящие соединения
-sudo ufw default allow outgoing # разрешать все исходящие соединения
-sudo ufw allow $SSH_PORT/tcp # разрешать ssh-соединения
-printf "${GREEN}Автоматически был считан из файла sshd_config и добавлен в исключения порт SSH : $SSH_PORT/tcp ${NC}\n"
-
+# Проверяем, существует ли уже правило для порта SSH
+if sudo ufw status | grep -q $SSH_PORT/tcp; then
+    printf "${GREEN}Правило для SSH-порта уже существует. Пропускаем добавление.${NC}\n"
+else
+    # настройка правил фаервола
+    sudo ufw default deny incoming # отклонять все входящие соединения
+    sudo ufw default allow outgoing # разрешать все исходящие соединения
+    sudo ufw allow $SSH_PORT/tcp # разрешать ssh-соединения
+    printf "${GREEN}Автоматически был считан из файла sshd_config и добавлен в исключения порт SSH : $SSH_PORT/tcp ${NC}\n"
+fi
 # вывод доступных сервисов
 printf "${YELLOW}Выберите сервисы, к которым нужно открыть доступ:${NC}\n"
 printf "${YELLOW}1. HTTP (порт 80)\n2. HTTPS (порт 443)\n3. MySQL (порт 3306)\n4. PostgreSQL (порт 5432)\n5. FTP (порты 20 и 21)\n6. SMTP (порты 25 и 587)\n7. DNS (порты 53/tcp и 53/udp)\n8. NFS (порты 111 и 2049)\n9. Samba (порты 139 и 445)\n10. Все вышеперечисленные сервисы${NC}\n\n"
