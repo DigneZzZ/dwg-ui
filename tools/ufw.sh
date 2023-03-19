@@ -27,6 +27,7 @@ fi
 sudo ufw default deny incoming # отклонять все входящие соединения
 sudo ufw default allow outgoing # разрешать все исходящие соединения
 sudo ufw allow $SSH_PORT/tcp # разрешать ssh-соединения
+printf "${GREEN}Автоматически был считан из файла sshd_config и добавлен в исключения порт SSH : $SSH_PORT/tcp ${NC}\n"
 
 # вывод доступных сервисов
 printf "${YELLOW}Выберите сервисы, к которым нужно открыть доступ:${NC}\n"
