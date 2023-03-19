@@ -108,5 +108,21 @@ fi
 sudo ufw enable
 
 # вывод информации об открытых портах
+#printf "${GREEN}\nОткрытые порты:${NC}\n"
+#sudo ufw status numbered | grep -Eo "([0-9]+/[a-z]+).+?ALLOW.+?Anywhere" | sed -E "s/([0-9]+\/[a-z]+).+?ALLOW.+?Anywhere/\1/g"
+
+# вывод информации об открытых портах
 printf "${GREEN}\nОткрытые порты:${NC}\n"
-sudo ufw status numbered | grep -Eo "([0-9]+/[a-z]+).+?ALLOW.+?Anywhere" | sed -E "s/([0-9]+\/[a-z]+).+?ALLOW.+?Anywhere/\1/g"
+sudo ufw status numbered | grep -Eo "([0-9]+/[a-z]+).+?ALLOW.+?Anywhere" | sed -E "s/([0-9]+\/[a-z]+).+?ALLOW.+?Anywhere/\1/g" | while read -r line; do
+    PORT=$(echo "$line" | cut -d'/' -f1)
+    PROTO=$(echo "$line" | cut -d'/' -f2)
+
+    # Проверяем, открыт ли порт для ipv6
+    if sudo ufw status numbered | grep -q "$PORT/.*$PROTO.*ALLOW.*Anywhere (v6)"; then
+        printf "${YELLOW}$PORT/$PROTO (v6)${NC}\n"
+    else
+        printf "$line\n"
+    fi
+done
+
+    printf "${GREEN}Заходите на мой форум: https://openode.ru${NC}\n"
