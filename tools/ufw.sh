@@ -1,167 +1,102 @@
 #!/bin/bash
 
-# Определяем цвета для подсветки текста
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-NC='\033[0m' # No Color
-
-# Проверяем права администратора
-if [ $(id -u) != 0 ]; then
-    echo -e "${RED}Необходимы права администратора.${NC}"
-    exit 1
+# проверка на запуск от суперпользователя
+if [[ $EUID -ne 0 ]]; then
+   printf "\e[31mЭтот скрипт должен быть запущен с правами суперпользователя\e[0m\n" 
+   exit 1
 fi
 
-# Проверяем наличие UFW на Debian или Ubuntu
-if [ -x "$(command -v ufw)" ]; then
-    echo -e "${GREEN}UFW уже установлен${NC}"
-# Если UFW не установлен, проверяем, является ли операционная система Debian или Ubuntu
-elif [ -x "$(command -v apt-get)" ]; then
-    echo -e "${YELLOW}UFW не установлен${NC}"
-    echo -e "${YELLOW}Установка UFW...${NC}"
-    # Добавляем возможность установки на системах Ubuntu 20.04, Ubuntu 22.04, Debian 10, Debian 11
-    if [ $(lsb_release -rs) == "20.04" ] || [ $(lsb_release -rs) == "22.04" ] || [ $(lsb_release -rs) == "10" ] || [ $(lsb_release -rs) == "11" ]; then
-        sudo apt-get install ufw -y
-        echo -e "${GREEN}Установка UFW завершена успешно${NC}"
-    else
-        echo -e "${RED}Неподдерживаемая версия операционной системы.${NC}"
-        exit 1
-    fi
-# Проверяем наличие firewalld на CentOS
-elif [ -x "$(command -v firewall-cmd)" ]; then
-    echo -e "${GREEN}firewalld уже установлен${NC}"
-# Если firewalld не установлен, проверяем, является ли операционная система CentOS
-elif [ -x "$(command -v yum)" ]; then
-    echo -e "${YELLOW}firewalld не установлен${NC}"
-    echo -e "${YELLOW}Установка firewalld...${NC}"
-    # Добавляем возможность установки на системах CentOS 7, CentOS 8, CentOS 9
-    if [ $(cat /etc/redhat-release | grep -oE '[0-9]+' | head -1) == "7" ] || [ $(cat /etc/redhat-release | grep -oE '[0-9]+' | head -1) == "8" ] || [ $(cat /etc/redhat-release | grep -oE '[0-9]+' | head -1) == "9" ]; then
-        sudo yum install firewalld -y
-        echo -e "${GREEN}Установка firewalld завершена успешно${NC}"
-    else
-        echo -e "${RED}Неподдерживаемая версия операционной системы.${NC}"
-        exit 1
-    fi
+# проверка на наличие установленного ufw
+if dpkg --get-selections | grep -q "^ufw[[:space:]]*install$" >/dev/null; then
+    printf "\e[32mUFW уже установлен. Пропускаем установку.\e[0m\n"
 else
-    echo -e "${RED}Операционная система не поддерживается.${NC}"
-    exit 1
+    # установка ufw
+    sudo apt update
+    sudo apt install ufw -y
 fi
 
-if  -x "$(command -v firewall-cmd)" ; then
-    # Проверяем наличие файла /etc/ssh/sshdconfig
-    if [ ! -f "/etc/ssh/sshdconfig" ]; then
-        echo -e "${RED}Файл /etc/ssh/sshdconfig не найден.${NC}"
-        exit 1
-    fi
+# чтение ssh-порта из файла sshd_config
+SSH_PORT=$(grep "^Port " /etc/ssh/sshd_config | awk '{print $2}')
 
-    # Считываем ssh порт из файла sshdconfig
-    sshport=$(grep -oP '(?<=Port )\d+' /etc/ssh/sshdconfig)
+# настройка правил фаервола
+sudo ufw default deny incoming # отклонять все входящие соединения
+sudo ufw default allow outgoing # разрешать все исходящие соединения
+sudo ufw allow $SSH_PORT/tcp # разрешать ssh-соединения
 
-    # Запрашиваем подтверждение на использование определенного ssh порта
-    echo -e "Обнаружен ssh порт: ${YELLOW}$sshport${NC}. Использовать его? (y/n)"
-    read usedefaultport
+# вывод доступных сервисов
+printf "\e[33mВыберите сервисы, к которым нужно открыть доступ:\e[0m\n"
+printf "\e[33m1. HTTP (порт 80)\n2. HTTPS (порт 443)\n3. MySQL (порт 3306)\n4. PostgreSQL (порт 5432)\n5. FTP (порты 20 и 21)\n6. SMTP (порты 25 и 587)\n7. DNS (порты 53/tcp и 53/udp)\n8. NFS (порты 111 и 2049)\n9. Samba (порты 139 и 445)\n10. Все вышеперечисленные сервисы\e[0m\n\n"
 
-    if [[ "$usedefaultport" =~ ^(y|Y) ]]; then
-      # Добавляем ssh порт в список разрешенных
-      firewall-cmd --add-port=$sshport/tcp --permanent
-    else
-      echo -e "Введите ssh порт:"
-      read customsshport
-      # Добавляем кастомный ssh порт в список разрешенных
-      firewall-cmd --add-port=$customsshport/tcp --permanent
-    fi
+# запрос выбора сервисов
+printf "\e[33mВведите номера сервисов через запятую (например, 1,3,5): \e[0m"
+read SERVICES
 
-   # Предлагаем пользователю добавить разрешенные порты для других сервисов
-echo -e "Добавить разрешенные порты для других сервисов? (y/n)"
-read add_additional_ports
-
-if [[ "$add_additional_ports" =~ ^(y|Y) ]]; then
-  # Список популярных сервисов и портов
-  services=("HTTP:80" "HTTPS:443" "FTP:20,21" "SMTP:25" "MySQL:3306")
-
-  for service in "${services[@]}"
-  do
-    servicename=$(echo $service | cut -d':' -f1)
-    ports=$(echo $service | cut -d':' -f2)
-
-    echo -e "Разрешить доступ к портам ${YELLOW}$ports${NC} для сервиса ${YELLOW}$servicename${NC}? (y/n)"
-    read allowservice
-
-    if [[ "$allowservice" =~ ^(y|Y) ]]; then
-      for port in $(echo $ports | sed "s/,/ /g")
-      do
-        firewall-cmd --add-port=$port/tcp --permanent
-      done
-    fi
-  done
-
-      # Перезагружаем firewalld
-      systemctl restart firewalld
-
-      echo -e "${GREEN}Разрешенные порты для сервисов добавлены.${NC}"
-    else
-      # Перезагружаем firewalld
-      systemctl restart firewalld
-
-      echo -e "${GREEN}Настройка firewall завершена.${NC}"
-    fi
-
-    echo -e "${GREEN}Настройка firewalld завершена.${NC}"
-else
-    # Проверяем наличие файла /etc/ssh/sshdconfig
-    if [ ! -f "/etc/ssh/sshdconfig" ]; then
-        echo -e "${RED}Файл /etc/ssh/sshdconfig не найден.${NC}"
-        exit 1
-    fi
-
-    # Считываем ssh порт из файла sshdconfig
-    sshport=$(grep -oP '(?<=Port )\d+' /etc/ssh/sshdconfig)
-
-    # Запрашиваем подтверждение на использование определенного ssh порта
-    echo -e "Обнаружен ssh порт: ${YELLOW}$sshport${NC}. Использовать его? (y/n)"
-    read usedefaultport
-
-    if [[ "$usedefaultport" =~ ^(y|Y) ]]; then
-      # Добавляем ssh порт в список разрешенных
-      ufw allow $sshport/tcp
-    else
-      echo -e "Введите ssh порт:"
-      read customsshport
-      # Добавляем кастомный ssh порт в список разрешенных
-      ufw allow $customsshport/tcp
-    fi
-
-    # Предлагаем пользователю добавить разрешенные порты для других сервисов
-    echo -e "Добавить разрешенные порты для других сервисов? (y/n)"
-
-    read add_additional_ports
-
-    if [[ "$add_additional_ports" =~ ^(y|Y) ]]; then
-      # Список популярных сервисов и портов
-      services=("HTTP:80" "HTTPS:443" "FTP:20,21" "SMTP:25" "MySQL:3306")
-
-      for service in "${services[@]}"
-      do
-        service_name=$(echo $service | cut -d':' -f1)
-        ports=$(echo $service | cut -d':' -f2)
-
-        echo -e "Разрешить доступ к портам ${YELLOW}$ports${NC} для сервиса ${YELLOW}$service_name${NC}? (y/n)"
-        read allow_service
-
-        if [[ "$allow_service" =~ ^(y|Y) ]]; then
-          for port in $(echo $ports | sed "s/,/ /g")
-          do
-            ufw allow $port/tcp
-          done
-        fi
-      done
-
-      echo -e "${GREEN}Разрешенные порты для сервисов добавлены.${NC}"
-    else
-      echo -e "${GREEN}Настройка ufw завершена.${NC}"
-    fi
-
-    echo -e "${GREEN}Настройка ufw завершена.${NC}"
+# разрешение соединений для выбранных сервисов
+if [[ $SERVICES == *"1"* ]]; then
+    sudo ufw allow 80/tcp # разрешать http-соединения
 fi
-    echo -e "${YELLOW}Регистрируйтесь на моём форуме: https://openode.ru${NC}"
-exit 0
+
+if [[ $SERVICES == *"2"* ]]; then
+    sudo ufw allow 443/tcp # разрешать https-соединения
+fi
+
+if [[ $SERVICES == *"3"* ]]; then
+    sudo ufw allow 3306/tcp # разрешать mysql-соединения
+fi
+
+if [[ $SERVICES == *"4"* ]]; then
+    sudo ufw allow 5432/tcp # разрешать postgresql-соединения
+fi
+
+if [[ $SERVICES == *"5"* ]]; then
+    sudo ufw allow 20/tcp # разрешать ftp-соединения
+    sudo ufw allow 21/tcp # разрешать ftp-соединения
+fi
+
+if [[ $SERVICES == *"6"* ]]; then
+    sudo ufw allow 25/tcp # разрешать smtp-соединения
+    sudo ufw allow 587/tcp # разрешать smtp-соединения
+fi
+
+if [[ $SERVICES == *"7"* ]]; then
+    sudo ufw allow 53/tcp # разрешать dns-соединения
+    sudo ufw allow 53/udp # разрешать dns-соединения
+fi
+
+if [[ $SERVICES == *"8"* ]]; then
+    sudo ufw allow 111/tcp # разрешать nfs-соединения
+    sudo ufw allow 111/udp # разрешать nfs-соединения
+    sudo ufw allow 2049/tcp # разрешать nfs-соединения
+    sudo ufw allow 2049/udp # разрешать nfs-соединения
+fi
+
+if [[ $SERVICES == *"9"* ]]; then
+    sudo ufw allow 139/tcp # разрешать samba-соединения
+    sudo ufw allow 445/tcp # разрешать samba-соединения
+fi
+
+if [[ $SERVICES == *"10"* ]]; then
+    sudo ufw allow 80/tcp # разрешать http-соединения
+    sudo ufw allow 443/tcp # разрешать https-соединения
+    sudo ufw allow 3306/tcp # разрешать mysql-соединения
+    sudo ufw allow 5432/tcp # разрешать postgresql-соединения
+    sudo ufw allow 20/tcp # разрешать ftp-соединения
+    sudo ufw allow 21/tcp # разрешать ftp-соединения
+    sudo ufw allow 25/tcp # разрешать smtp-соединения
+    sudo ufw allow 587/tcp # разрешать smtp-соединения
+    sudo ufw allow 53/tcp # разрешать dns-соединения
+    sudo ufw allow 53/udp # разрешать dns-соединения
+    sudo ufw allow 111/tcp # разрешать nfs-соединения
+    sudo ufw allow 111/udp # разрешать nfs-соединения
+    sudo ufw allow 2049/tcp # разрешать nfs-соединения
+    sudo ufw allow 2049/udp # разрешать nfs-соединения
+    sudo ufw allow 139/tcp # разрешать samba-соединения
+    sudo ufw allow 445/tcp # разрешать samba-соединения
+fi
+
+# включение фаервола
+sudo ufw enable
+
+# вывод информации об открытых портах
+printf "\n\e[32mОткрытые порты:\e[0m\n"
+sudo ufw status numbered | grep -Eo "([0-9]+/[a-z]+).+?ALLOW.+?Anywhere" | sed -E "s/([0-9]+\/[a-z]+).+?ALLOW.+?Anywhere/\1/g"
