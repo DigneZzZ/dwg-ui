@@ -8,8 +8,17 @@ fi
 
 # Проверяем, установлен ли fail2ban
 if ! [ -x "$(command -v fail2ban-client)" ]; then
-  echo 'Fail2ban не установлен. Установите его с помощью "sudo apt-get install fail2ban" и повторите попытку.' >&2
-  exit 1
+  echo 'Fail2ban не установлен. Установить fail2ban? [y/n]'
+  read -r install_fail2ban
+
+  if [ "$install_fail2ban" = "y" ]; then
+    # Устанавливаем fail2ban
+    sudo apt-get update
+    sudo apt-get install fail2ban -y
+  else
+    echo 'Выход из скрипта'
+    exit 1
+  fi
 fi
 
 # Получаем порт ssh
