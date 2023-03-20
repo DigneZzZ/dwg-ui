@@ -33,7 +33,7 @@ dns:
     - https://dns.adguard-dns.com/dns-query
     - '#New increase protocol of Adguard Home DNS-over-QUIC, with the same block settings.'
     - quic://dns.adguard-dns.com
-    - 'Quad9 Regular DNS servers which provide protection from phishing and spyware. They include blocklists, DNSSEC validation, and other security features.'
+    - '#Quad9 Regular DNS servers which provide protection from phishing and spyware. They include blocklists, DNSSEC validation, and other security features.'
     - https://dns.quad9.net/dns-query
   upstream_dns_file: ""
   bootstrap_dns:
