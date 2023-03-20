@@ -39,7 +39,7 @@ dns:
   bootstrap_dns:
     - 10.2.0.200
   all_servers: false
-  fastest_addr: true
+  fastest_addr: false
   fastest_timeout: 1s
   allowed_clients: []
   disallowed_clients: []
@@ -57,7 +57,10 @@ dns:
   bogus_nxdomain: []
   aaaa_disabled: false
   enable_dnssec: true
-  edns_client_subnet: true
+  edns_client_subnet:
+    custom_ip: ""
+    enabled: true
+    use_custom: false
   max_goroutines: 300
   handle_ddr: true
   ipset: []
@@ -178,4 +181,4 @@ os:
   group: ""
   user: ""
   rlimit_nofile: 0
-schema_version: 16
+schema_version: 17
