@@ -1,5 +1,5 @@
 #!/bin/bash
-
+export LC_CTYPE=en_US.UTF-8
 # переменные для изменения цвета текста
 RED='\e[31m'
 GREEN='\e[32m'
