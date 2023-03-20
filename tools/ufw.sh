@@ -6,6 +6,26 @@ GREEN='\e[32m'
 YELLOW='\e[33m'
 NC='\e[0m'
 
+
+# Проверяем, установлен ли пакет sudo
+if ! command -v sudo &> /dev/null; then
+    # Проверяем версию Debian
+    if [[ $(lsb_release -rs) == "10" || $(lsb_release -rs) == "11" ]]; then
+        printf "${YELLOW}Мы определили что у вас Debian, для скрипта нужен пакет SUDO, он будет установлен.${NC}\n"
+        # Устанавливаем пакет sudo
+        apt-get update
+        apt-get install sudo -y
+    printf "${GREEN}***********${NC}\n"
+    printf "${GREEN}Sudo установлен. Продолжаем установку.${NC}\n"
+    printf "${GREEN}***********${NC}\n"
+    else
+        # Продолжаем работу скрипта без завершения
+        exit 0
+    fi
+else
+    printf "${GREEN}SUDO уже установлен. Пропускаем установку.${NC}\n"
+fi
+
 # проверка на запуск от суперпользователя
 if [[ $EUID -ne 0 ]]; then
    printf "${RED}Этот скрипт должен быть запущен с правами суперпользователя${NC}\n" 
