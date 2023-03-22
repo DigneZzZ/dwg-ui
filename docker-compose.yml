@@ -8,8 +8,7 @@ services:
     volumes:
       - "./unbound:/opt/unbound/etc/unbound/"
     networks:
-      private_network:
-        ipv4_address: 10.2.0.200
+      - private_network
 
   wg-easy:
     depends_on: [unbound, adguardhome]
@@ -38,8 +37,7 @@ services:
       - 10.2.0.100
       - 10.2.0.200
     networks:
-      private_network:
-        ipv4_address: 10.2.0.3
+      - private_network
 
   adguardhome:
     depends_on: [unbound]
@@ -52,8 +50,7 @@ services:
       - ./work:/opt/adguardhome/work
       - ./conf:/opt/adguardhome/conf
     networks:
-      private_network:
-        ipv4_address: 10.2.0.100
+      - private_network
 
 networks:
   private_network:
