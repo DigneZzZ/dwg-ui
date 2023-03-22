@@ -33,4 +33,9 @@ sudo ufw disable
   printf "${GREEN}Выключили...${NC}\n"
 # Включаем ufw и пропускаем все запросы подтверждения
 sudo ufw --force enable
+
   printf "${GREEN}Включили....${NC}\n"
+  printf "${YELLOW}***********************${NC}\n"
+    printf "${RED}Теперь веб-интерфейс будет доступен только адресу:${NC}\n"
+      printf "${BLUE}http://10.2.0.3:51821${NC}\n"
+        printf "${YELLOW}***********************${NC}\n"
