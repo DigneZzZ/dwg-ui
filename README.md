@@ -40,6 +40,14 @@ apt update && apt install git -y && git clone https://github.com/dignezzz/ad-wir
 4. AdGuard Home - интерактивный режим создания пользователя и пароля (можно оставить стандартным)
 5. Unbound - все в стоке
 6. apache2-utils - необходим для генерации хэш-паролей
+
+## После установки:
+### Ставим UFW:
+```bash
+chmod +x -R ad-wireguard/tools && ./ad-wireguard/tools/ufw-docker.sh
+ ```
+ ### Ставим UFW-docker **(ТОЛЬКО ПОСЛЕ ТОГО КАК СОЗДАДИТЕ СЕБЕ КЛИЕНТА В WIREGUARD!!!)**:
+```bash
  
 ## Автор:
 
