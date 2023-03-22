@@ -5,15 +5,14 @@ RED='\e[31m'
 GREEN='\e[32m'
 YELLOW='\e[33m'
 NC='\e[0m'
+# Проверяем установлен ли UFW
+if ! command -v ufw &> /dev/null
+then
+    echo "UFW не установлен. Выходим..."
+    exit
+fi
 
-# Считываем значение Address из файла
-#  printf "${GREEN}Получили значение адреса${NC}\n"
-#address=$(grep -oP 'Address\s*=\s*\K\S+' ~/ad-wireguard/wg.conf)
-
-# Удаляем все после 3-ой точки в IP-адресе
-
-#address=${address%.*}.0/24
-#  printf "${GREEN}Исправили адрес${NC}\n"
+echo "UFW установлен. Продолжаем работу..."
   
 # Скачиваем ufw-docker
 sudo wget -O /usr/local/bin/ufw-docker https://github.com/chaifeng/ufw-docker/raw/master/ufw-docker
