@@ -71,22 +71,24 @@ fi
 #else
 #  curl -L "https://github.com/docker/compose/releases/download/$LATEST_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose &&  chmod +x /usr/local/bin/docker-compose && echo -e "${GREEN}Docker Compose успешно установлен${NC}"
 #fi
+
 # Проверка наличия docker-compose
 if command -v docker-compose &> /dev/null
 then
-    echo "Docker Compose уже установлен"
-    exit
-fi
-
-# Установка docker-compose
-curl -L --fail https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh -o /usr/local/bin/docker-compose &&
-chmod +x /usr/local/bin/docker-compose
-
-# Проверка успешности установки
-if [ $? -eq 0 ]; then
-  echo "Установка Docker Compose завершена успешно"
+    printf "${GREEN}Docker Compose уже установлен\n${NC}"
 else
-  echo "Ошибка при установке Docker Compose"
+    # Установка docker-compose
+    curl -L --fail https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh -o /usr/local/bin/docker-compose &&
+    chmod +x /usr/local/bin/docker-compose
+
+    # Проверка успешности установки
+    if [ $? -eq 0 ]; then
+        printf "${RED}Установка Docker Compose завершена успешно\n${NC}"
+    else
+        printf "${RED}Ошибка при установке Docker Compose\n${NC}"
+        printf "${RED}Пожалуйста, установите docker-compose самостоятельно, или обратитесь к автору скрипта. ${BLUE}http://openode.ru${NC}"
+        exit 1
+    fi
 fi
 
 # Устанавливаем редактор Nano
