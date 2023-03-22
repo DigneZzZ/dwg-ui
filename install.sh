@@ -48,28 +48,45 @@ else
 fi
 
 # Устанавливаем Docker Compose
-LATEST_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep "tag_name" | cut -d '"' -f 4)
-if [ -x "$(command -v docker-compose)" ]; then
-  INSTALLED_VERSION=$(docker-compose version --short)
-  if [ "$LATEST_VERSION" == "$INSTALLED_VERSION" ]; then
-    echo -e "${GREEN}Установлена последняя версия Docker Compose${NC}"
-  else
-    echo -e "${YELLOW}Обнаружена устаревшая версия Docker Compose${NC}"
-    read -p "Хотите обновить Docker Compose? (y/n) " update_docker_compose
-    case $update_docker_compose in
-      [Yy]* ) 
-        rm /usr/local/bin/docker-compose &&  curl -L "https://github.com/docker/compose/releases/download/$LATEST_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose &&  chmod +x /usr/local/bin/docker-compose && echo -e "${GREEN}Docker Compose успешно обновлен${NC}"
-        ;;
-      [Nn]* ) 
-        echo -e "${YELLOW}Продолжаем выполнение скрипта без обновления Docker Compose${NC}"
-        ;;
-      * ) 
-        echo -e "${RED}Неправильный ввод. Продолжаем выполнение скрипта без обновления Docker Compose${NC}"
-        ;;
-    esac
-  fi
+#LATEST_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep "tag_name" | cut -d '"' -f 4)
+#if [ -x "$(command -v docker-compose)" ]; then
+#  INSTALLED_VERSION=$(docker-compose version --short)
+#  if [ "$LATEST_VERSION" == "$INSTALLED_VERSION" ]; then
+#    echo -e "${GREEN}Установлена последняя версия Docker Compose${NC}"
+#  else
+#    echo -e "${YELLOW}Обнаружена устаревшая версия Docker Compose${NC}"
+#    read -p "Хотите обновить Docker Compose? (y/n) " update_docker_compose
+#    case $update_docker_compose in
+#      [Yy]* ) 
+#        rm /usr/local/bin/docker-compose &&  curl -L "https://github.com/docker/compose/releases/download/$LATEST_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose &&  chmod +x /usr/local/bin/docker-compose && echo -e "${GREEN}Docker Compose успешно обновлен${NC}"
+#        ;;
+#      [Nn]* ) 
+#        echo -e "${YELLOW}Продолжаем выполнение скрипта без обновления Docker Compose${NC}"
+#        ;;
+#      * ) 
+#        echo -e "${RED}Неправильный ввод. Продолжаем выполнение скрипта без обновления Docker Compose${NC}"
+#        ;;
+#    esac
+#  fi
+#else
+#  curl -L "https://github.com/docker/compose/releases/download/$LATEST_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose &&  chmod +x /usr/local/bin/docker-compose && echo -e "${GREEN}Docker Compose успешно установлен${NC}"
+#fi
+# Проверка наличия docker-compose
+if command -v docker-compose &> /dev/null
+then
+    echo "Docker Compose уже установлен"
+    exit
+fi
+
+# Установка docker-compose
+curl -L --fail https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh -o /usr/local/bin/docker-compose &&
+chmod +x /usr/local/bin/docker-compose
+
+# Проверка успешности установки
+if [ $? -eq 0 ]; then
+  echo "Установка Docker Compose завершена успешно"
 else
-  curl -L "https://github.com/docker/compose/releases/download/$LATEST_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose &&  chmod +x /usr/local/bin/docker-compose && echo -e "${GREEN}Docker Compose успешно установлен${NC}"
+  echo "Ошибка при установке Docker Compose"
 fi
 
 # Устанавливаем редактор Nano
