@@ -1,24 +1,44 @@
 version: "3"
 services:
+
+networks:
+  private_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.2.0.0/24
+
+services:
+
   unbound:
+    #image: "mvance/unbound:latest"
     image: "mvance/unbound:1.17.0"
     container_name: unbound
     restart: unless-stopped
     hostname: "unbound"
     volumes:
       - "./unbound:/opt/unbound/etc/unbound/"
-    networks:
-      - private_network
 
+    networks:
+      private_network:
+        ipv4_address: 10.2.0.200
+        
+        
   wg-easy:
     depends_on: [unbound, adguardhome]
     environment:
-      - WG_HOST=MYHOST_IP
-      - PASSWORD=10h30
+      # ⚠️ Required:
+      # Change this to your host's public address
+      - WG_HOST=MYHOST_IP   #### <----CHANGE TO YOUR IP-Address
+
+      # Optional:
+      - PASSWORD=10h30 ####<----CHANGE TO YOU
       - WG_PORT=51820
       - WG_DEFAULT_ADDRESS=10.10.10.x
       - WG_DEFAULT_DNS=10.2.0.100
       - WG_MTU=1280
+      # - WG_ALLOWED_IPS=192.168.15.0/24, 10.0.1.0/24
+
     image: ditek/wg-easy
     container_name: wg-easy
     volumes:
@@ -34,10 +54,15 @@ services:
       - net.ipv4.ip_forward=1
       - net.ipv4.conf.all.src_valid_mark=1
     dns:
-      - 10.2.0.100
-      - 10.2.0.200
+      - 10.2.0.100 # Points to adguard
+      - 10.2.0.200 # Points to unbound
+
+    restart: unless-stopped
     networks:
-      - private_network
+      private_network:
+        ipv4_address: 10.2.0.3
+
+
 
   adguardhome:
     depends_on: [unbound]
@@ -49,12 +74,7 @@ services:
     volumes:
       - ./work:/opt/adguardhome/work
       - ./conf:/opt/adguardhome/conf
-    networks:
-      - private_network
 
-networks:
-  private_network:
-    ipam:
-      driver: default
-      config:
-        - subnet: 10.2.0.0/24
+    networks:
+      private_network:
+        ipv4_address: 10.2.0.100
