@@ -44,11 +44,12 @@ apt update && apt install git -y && git clone https://github.com/dignezzz/ad-wir
 ## После установки:
 ### Ставим UFW:
 ```bash
-chmod +x -R ad-wireguard/tools && ./ad-wireguard/tools/ufw-docker.sh
+chmod +x -R ad-wireguard/tools && ./ad-wireguard/tools/.sh
  ```
- ### Ставим UFW-docker **(ТОЛЬКО ПОСЛЕ ТОГО КАК СОЗДАДИТЕ СЕБЕ КЛИЕНТА В WIREGUARD!!!)**:
+ ### Ставим UFW-docker и закрываем доступ извне **(ТОЛЬКО ПОСЛЕ ТОГО КАК СОЗДАДИТЕ СЕБЕ КЛИЕНТА В WIREGUARD!!!)**:
 ```bash
- 
+./ad-wireguard/tools/ufw-docker.sh
+  ```
 ## Автор:
 
 👤 ** Alexey **
