@@ -83,13 +83,37 @@ else
 
     # Проверка успешности установки
     if [ $? -eq 0 ]; then
-        printf "${RED}Установка Docker Compose завершена успешно\n${NC}"
+        printf "${GREEN}Установка Docker Compose завершена успешно\n${NC}"
     else
-        printf "${RED}Ошибка при установке Docker Compose\n${NC}"
-        printf "${RED}Пожалуйста, установите docker-compose самостоятельно, или обратитесь к автору скрипта. ${BLUE}http://openode.ru${NC}"
-        exit 1
+        printf "${GREEN}Ошибка при установке Docker Compose\n${NC}"
+        printf "${YELLOW}Хотите продолжить выполнение скрипта? (y/n): ${NC}"
+        read choice
+        case "$choice" in
+            y|Y )
+                printf "${GREEN}Продолжение выполнения скрипта\n${NC}"
+                ;;
+            n|N )
+                printf "${RED}Завершение выполнения скрипта\n${NC}"
+                exit 1
+                ;;
+            * )
+                printf "${RED}Неверный выбор. Завершение выполнения скрипта\n${NC}"
+                exit 1
+                ;;
+        esac
     fi
 fi
+
+# Проверка актуальности версии docker-compose
+LATEST_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep "tag_name" | cut -d\" -f4)
+INSTALLED_VERSION=$(docker-compose version --short 2>/dev/null)
+
+if [ "$LATEST_VERSION" = "$INSTALLED_VERSION" ]; then
+    printf "${GREEN}Установленная версия Docker Compose (%s) является актуальной\n" "$INSTALLED_VERSION${NC}"
+else
+    printf "${YELLOW}Установленная версия Docker Compose (%s) не является актуальной. Последняя версия: %s\n" "$INSTALLED_VERSION" "$LATEST_VERSION${NC}"
+fi
+
 
 # Устанавливаем редактор Nano
 if ! command -v nano &> /dev/null
