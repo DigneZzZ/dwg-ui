@@ -44,6 +44,7 @@ curl -sSL https://raw.githubusercontent.com/DigneZzZ/ad-wireguard/main/setup.sh 
 6. apache2-utils - необходим для генерации хэш-паролей
 7. ssh.sh - скрипт для смены порта SSH подключения
 8. ufw.sh - скрипт для установки UFW Firewall.
+9. Напомнит установить ufw-docker и закрыть доступ извне! ** ВНИМАНИЕ! Запускать только того как создадите для себя клиента в WireGUARD!!! **
 
 ## Автор:
 
