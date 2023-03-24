@@ -5,6 +5,7 @@ RED='\e[31m'
 GREEN='\e[32m'
 YELLOW='\e[33m'
 NC='\e[0m'
+BG_RED='\e[41m'
 # Проверяем установлен ли UFW
 if ! command -v ufw &> /dev/null
 then
@@ -18,10 +19,10 @@ echo "UFW установлен. Продолжаем работу..."
 if grep -q "^\[Peer\]" ~/ad-wireguard/wg0.conf; then
   printf "${GREEN}В файле ~/ad-wireguard/wg0.conf есть клиенты. Можно продолжать работу.${NC}\n"
 else
-  printf "${RED}\e[41mВ файле ~/ad-wireguard/wg0.conf нет клиентов. Нельзя продолжать работу.${NC}\n"
-  printf "${RED}\e[41mЕсли бы вы сейчас установили ufw-docker, вы не смогли бы подключиться к WireGuard!${NC}\n"
-  printf "${RED}\e[41mСоздайте Peer'a и повторите заново!${NC}\n"
-  printf "${RED}\e[41mЕсли скрипт отработал не правильно, напишите мне на форуме: http://openode.ru${NC}\n"
+  printf "${BG_RED}В файле ~/ad-wireguard/wg0.conf нет клиентов. Нельзя продолжать работу.${NC}\n"
+  printf "${BG_RED}Если бы вы сейчас установили ufw-docker, вы не смогли бы подключиться к WireGuard!${NC}\n"
+  printf "${BG_RED}Создайте Peer'a и повторите заново!${NC}\n"
+  printf "${BG_RED}Если скрипт отработал не правильно, напишите мне на форуме: http://openode.ru${NC}\n"
   exit
 fi
   
