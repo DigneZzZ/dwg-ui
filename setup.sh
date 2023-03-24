@@ -1,42 +1,45 @@
 # Обновление пакетов
-printf "Обновление пакетов...\n"
+printf "\e[42mОбновление пакетов...\e[0m\n"
 apt update
-printf "Пакеты успешно обновлены.\n"
+printf "\e[42mПакеты успешно обновлены.\e[0m\n"
 
 # Установка Git
-printf "Установка Git...\n"
+printf "\e[42mУстановка Git...\e[0m\n"
 apt install git -y
-printf "Git успешно установлен.\n"
+printf "\e[42mGit успешно установлен.\e[0m\n"
 
 # Клонирование репозитория
-printf "Клонирование репозитория ad-wireguard...\n"
+printf "\e[42mКлонирование репозитория ad-wireguard...\e[0m\n"
 git clone https://github.com/dignezzz/ad-wireguard.git
-printf "Репозиторий ad-wireguard успешно склонирован.\n"
+printf "\e[42mРепозиторий ad-wireguard успешно склонирован.\e[0m\n"
 
 # Установка прав на файл установки
-printf "Установка прав на файл скрипта установки...\n"
+printf "\e[42mУстановка прав на файл установки...\e[0m\n"
 chmod +x ad-wireguard/install.sh
-printf "Права на файл скрипта успешно установлены.\n"
+printf "\e[42mПрава на файл установки выставлены.\e[0m\n"
 
 # Запуск установки
-printf "Запуск установки ad-wireguard...\n"
+printf "\e[42mЗапуск установки ad-wireguard...\e[0m\n"
 ./ad-wireguard/install.sh
-printf "Установка ad-wireguard успешно завершена.\n"
+printf "\e[42mУстановка ad-wireguard успешно завершена.\e[0m\n"
 
 # Установка прав на директорию tools
-printf "Установка прав на директорию tools для выполнения скриптов...\n"
+printf "\e[42mУстановка прав на директорию tools...\e[0m\n"
 chmod +x -R ad-wireguard/tools
-printf "Права на директорию tools успешно установлены.\n"
+printf "\e[42mПрава на директорию tools успешно установлены.\e[0m\n"
 
 # Запуск скрипта ssh.sh
-printf "Запуск скрипта ssh.sh для смены стандартного порта SSH...\n"
+printf "\e[42mЗапуск скрипта ssh.sh для смены стандартного порта SSH...\e[0m\n"
 ./ad-wireguard/tools/ssh.sh
-printf "Скрипт ssh.sh успешно выполнен.\n"
+printf "\e[42mСкрипт ssh.sh успешно выполнен.\e[0m\n"
 
 # Запуск скрипта ufw.sh
-printf "Запуск скрипта ufw.sh для установки UFW Firewall...\n"
+printf "\e[42mЗапуск скрипта ufw.sh для установки UFW Firewall...\e[0m\n"
 ./ad-wireguard/tools/ufw.sh
-printf "Скрипт ufw.sh успешно выполнен.\n"
-echo "Всё установлено!"
-echo "Не забудь отдельно установить UFW-Docker, для закрытия веб-интерфейса wireguard."
-echo "команда для установки: ./ad-wireguard/tools/ufw.docker"
+printf "\e[42mСкрипт ufw.sh успешно выполнен.\e[0m\n"
+
+printf '\e[48;5;202m\e[30m ################################################################## \e[0m\n'
+printf '\e[48;5;202m\e[30m Всё установлено! \e[0m\n'
+printf '\e[48;5;202m\e[30m Не забудь отдельно установить UFW-Docker, для закрытия веб-интерфейса wireguard. \e[0m\n'
+printf '\e[48;5;202m\e[30m команда для установки: ./ad-wireguard/tools/ufw.docker \e[0m\n'
+printf '\e[48;5;202m\e[30m ################################################################## \e[0m\n'
