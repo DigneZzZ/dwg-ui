@@ -26,13 +26,15 @@
 Базовый вариант на котором хотел бы отметить своё внимание. Претензий нет, кроме как скорость 100мбит/сек. (но хочется отметить, что скорость эта достаточно стабильная!)
 
 # Самая быстрая установка - 1 минута
+
 Запусти команду на чистом сервере
 
 ```bash
-apt update && apt install git -y && git clone https://github.com/dignezzz/ad-wireguard.git && cd ad-wireguard && chmod +x install.sh && ./install.sh && cd 
+curl -sSL https://raw.githubusercontent.com/DigneZzZ/ad-wireguard/main/setup.sh | sudo bash -s -- -x
 ```
 
 ## Что установится:
+
 0. Сначала установится Git, чтобы можно было скопировать мой репозиторий
 1. Docker - последняя версия
 2. Docker-compose - последняя версия
@@ -40,6 +42,8 @@ apt update && apt install git -y && git clone https://github.com/dignezzz/ad-wir
 4. AdGuard Home - интерактивный режим создания пользователя и пароля (можно оставить стандартным)
 5. Unbound - все в стоке
 6. apache2-utils - необходим для генерации хэш-паролей
+7. ssh.sh - скрипт для смены порта SSH подключения
+8. ufw.sh - скрипт для установки UFW Firewall.
 
 ## После установки:
 ### Ставим UFW:
