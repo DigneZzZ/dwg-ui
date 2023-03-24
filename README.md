@@ -45,15 +45,6 @@ curl -sSL https://raw.githubusercontent.com/DigneZzZ/ad-wireguard/main/setup.sh 
 7. ssh.sh - скрипт для смены порта SSH подключения
 8. ufw.sh - скрипт для установки UFW Firewall.
 
-## После установки:
-### Ставим UFW:
-```bash
-chmod +x -R ad-wireguard/tools && ./ad-wireguard/tools/ufw.sh
- ```
- ### Ставим UFW-docker и закрываем доступ извне **(ТОЛЬКО ПОСЛЕ ТОГО КАК СОЗДАДИТЕ СЕБЕ КЛИЕНТА В WIREGUARD!!!)**:
-```bash
-./ad-wireguard/tools/ufw-docker.sh
-  ```
 ## Автор:
 
 👤 ** Alexey **
