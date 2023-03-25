@@ -30,7 +30,7 @@
 Запусти команду на чистом сервере
 
 ```bash
-apt update && apt install curl sudo git -y && curl -O https://raw.githubusercontent.com/DigneZzZ/ad-wireguard/main/setup.sh && chmod +x setup.sh && ./setup.sh
+apt update && apt install curl sudo git -y && curl -Of https://raw.githubusercontent.com/DigneZzZ/ad-wireguard/main/setup.sh && chmod +x setup.sh && ./setup.sh
 ```
 
 ## Что установится:
