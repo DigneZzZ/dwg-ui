@@ -10,7 +10,7 @@ if grep -q /swapfile /etc/fstab; then
     case "$choice" in
         y|Y ) ;;
         n|N ) exit;;
-         ) printf "Неправильный выбор. Отмена.\n"; exit;;
+        * ) printf "Неправильный выбор. Отмена.\n"; exit;;
     esac
     # Удалить старый файл подкачки и запись из /etc/fstab
     sudo swapoff /swapfile
@@ -19,15 +19,15 @@ if grep -q /swapfile /etc/fstab; then
 fi
 
 # Получить размер ОЗУ в байтах
-mem_bytes=$(grep MemTotal /proc/meminfo | awk '{print $2  1024}')
+mem_bytes=$(grep MemTotal /proc/meminfo | awk '{print $2 * 1024}')
 
 # Рассчитать размер файла подкачки
-if (( membytes < 2147483648 )); then
+if (( mem_bytes < 2147483648 )); then
     # Вдвое больше объема ОЗУ, если ОЗУ менее 2 ГБ
-    swapsize=$(( membytes * 2 ))
+    swapsize=$(( mem_bytes * 2 ))
 else
     # ОЗУ больше или равно 2 ГБ, размер подкачки равен ОЗУ + 2 ГБ
-    swapsize=$(( membytes + 2147483648 ))
+    swapsize=$(( mem_bytes + 2147483648 ))
 fi
 
 # Создать файл подкачки
