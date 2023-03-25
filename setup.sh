@@ -17,7 +17,7 @@ git clone https://github.com/dignezzz/ad-wireguard.git temp
 cp -rf temp/* ad-wireguard/
 # удаление временной директории со всем ее содержимым
 rm -rf temp
-printf "\e[42mРепозиторий ad-wireguard успешно склонирован.\e[0m\n"
+printf "\e[42mРепозиторий ad-wireguard успешно клонирован до актуальной версии в репозитории.\e[0m\n"
 
 # Переходим в папку ad-wireguard
 printf "\e[42mПереходим в папку ad-wireguard...\e[0m\n"
