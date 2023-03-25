@@ -30,7 +30,7 @@
 Запусти команду на чистом сервере
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/DigneZzZ/ad-wireguard/main/setup.sh | sudo bash -s -- -x
+closed for renew
 ```
 
 ## Что установится:
