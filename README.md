@@ -30,7 +30,7 @@
 Запусти команду на чистом сервере
 
 ```bash
-closed for renew
+apt update && apt install curl sudo git -y && curl -O https://raw.githubusercontent.com/DigneZzZ/ad-wireguard/main/setup.sh && chmod +x setup.sh && ./setup.sh
 ```
 
 ## Что установится:
