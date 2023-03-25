@@ -141,7 +141,7 @@ else
     if lsof -Pi :51821 -sTCP:LISTEN -t >/dev/null ; then
         printf "${RED}!!!!>>> Порт 51821 уже используется контейнером.!\n ${NC}"
         if docker ps --format '{{.Names}} {{.Ports}}' | grep -q "wg-easy.*:51821->" ; then
-            printf "Wireguard контейнер использует порт 51821. Хотите продолжить установку? (y/n): "
+            printf "WG-EASY контейнер использует порт 51821. Хотите продолжить установку? (y/n): "
             read -r choice
             case "$choice" in 
               y|Y ) printf "Продолжаем установку...\n" ;;
