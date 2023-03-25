@@ -5,16 +5,8 @@ if grep -q /swapfile /etc/fstab; then
     echo "Файл подкачки уже существует."
     current_swap_size=$(grep /swapfile /proc/swaps | awk '{print $3}')
     echo "Текущий размер подкачки: $current_swap_size"
-    read -p "Вы хотите создать новый файл подкачки? (y/n) " choice
-    case "$choice" in
-        y|Y ) ;;
-        n|N ) exit;;
-        * ) echo "Неправильный выбор. Отмена."; exit;;
-    esac
-    # Удалить старый файл подкачки и запись из /etc/fstab
-    sudo swapoff /swapfile
-    sudo rm /swapfile
-    sudo sed -i '/\/swapfile/d' /etc/fstab
+    # Используем флаг -y, чтобы удалить запись из /etc/fstab без запроса подтверждения
+    sudo sed -i -e '/\/swapfile/{/swapfile/!d;}' -e '/\/swapfile/d' -y /etc/fstab
 fi
 
 # Получить размер ОЗУ в байтах
