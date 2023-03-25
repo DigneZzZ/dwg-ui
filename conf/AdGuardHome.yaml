@@ -74,7 +74,7 @@ dns:
   safesearch_cache_size: 1048576
   parental_cache_size: 1048576
   cache_time: 30
- rewrites:
+  rewrites:
     - domain: wg.local
       answer: 10.2.0.3
     - domain: agh.local
