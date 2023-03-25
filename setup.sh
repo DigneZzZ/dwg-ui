@@ -15,6 +15,13 @@ printf "\e[42mGit успешно установлен.\e[0m\n"
 printf "\e[42mКлонирование репозитория ad-wireguard...\e[0m\n"
 git clone https://github.com/dignezzz/ad-wireguard.git temp
 
+if [ ! -d "ad-wireguard" ]; then
+  mkdir ad-wireguard
+  echo "Папка ad-wireguard создана."
+else
+  echo "Папка ad-wireguard уже существует."
+fi
+
 # копирование содержимого временной директории в целевую директорию с перезаписью существующих файлов и папок
 cp -rf temp/* ad-wireguard/
 
