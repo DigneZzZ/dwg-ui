@@ -76,23 +76,23 @@ http://10.2.0.100/
 ### Password: **admin**
 
 
-# Предустановленный Adlists для Рунета в том числе:
-### RU-Adlist
+
+## Предустановленный Adlists для Рунета в том числе:
+* RU-Adlist
 https://easylist-downloads.adblockplus.org/advblock.txt
-### BitBlock
+* BitBlock
 https://easylist-downloads.adblockplus.org/bitblock.txt
-### Cntblock
+* Cntblock
 https://easylist-downloads.adblockplus.org/cntblock.txt
-### EasyList
+* EasyList
 https://easylist-downloads.adblockplus.org/easylist.txt
-### Доп список от Шакала
+* Доп список от Шакала
 https://schakal.ru/hosts/alive_hosts_ru_com.txt
-### файл с разблокированными r.mail.ru и graph.facebook.com
+* файл с разблокированными r.mail.ru и graph.facebook.com
 https://schakal.ru/hosts/hosts_mail_fb.txt
-
-### All DNS Servers
+---
+* All DNS Servers
 https://adguard-dns.io/kb/general/dns-providers/#cloudflare-dns
-
-### DNS Perfomance list:
+* DNS Perfomance list:
 https://www.dnsperf.com/#!dns-resolvers
 
