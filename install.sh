@@ -188,7 +188,7 @@ echo ""
 #  fi
 #done
 
-read -p "Введите пароль для веб-интерфейса: " WEBPASSWORD || WEBPASSWORD="openode"
+read -p "Введите пароль для веб-интерфейса (по умолчанию будет задан openode, если нажать enter): " WEBPASSWORD || WEBPASSWORD="openode"
 echo ""
 
 if [[ "$WEBPASSWORD" =~ ^[[:alnum:]]+$ ]]; then
