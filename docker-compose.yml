@@ -15,7 +15,7 @@ services:
     depends_on: [unbound, adguardhome]
     environment:
       - WG_HOST=MYHOST_IP
-      - PASSWORD=10h30
+      - PASSWORD=openode
       - WG_PORT=51820
       - WG_DEFAULT_ADDRESS=10.10.10.x
       - WG_DEFAULT_DNS=10.2.0.100
