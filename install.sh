@@ -111,7 +111,7 @@ INSTALLED_VERSION=$(docker-compose version --short 2>/dev/null)
 if [ "$LATEST_VERSION" = "$INSTALLED_VERSION" ]; then
     printf "${GREEN}Установленная версия Docker Compose (%s) является актуальной\n" "$INSTALLED_VERSION${NC}"
 else
-    printf "${YELLOW}Установленная версия Docker Compose (%s) не является актуальной. Последняя версия: %s\n" "$INSTALLED_VERSION" "$LATEST_VERSION${NC}"
+    printf "${YELLOW}Установленная версия Docker Compose (%s) не является актуальной. Последняя версия: %s\n" "$INSTALLED_VERSION" "$LATEST_VERSION"${NC}
 fi
 
 
