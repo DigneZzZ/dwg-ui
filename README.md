@@ -2,7 +2,7 @@
 ## Представляю вам лучшую сборку для самой быстрой настройки VPN сервера на WireGuard
 ## **Ad-WireGuard** = AdGuard with DoH DNS +  Wireguard with UI (wg-easy) + Unbound 
 
-# [ENGLISH DOCS](https://github.com/DigneZzZ/ad-wireguard/blob/main/README_EN.md)
+# [ENGLISH DOCS](https://github.com/DigneZzZ/dwg-ui/blob/main/README_EN.md)
 
 # Требования
 * Чистый пустой сервер.
@@ -30,7 +30,7 @@
 Запусти команду на чистом сервере
 
 ```bash
-apt update && apt install curl sudo git -y && curl -Of https://raw.githubusercontent.com/DigneZzZ/ad-wireguard/main/setup.sh && chmod +x setup.sh && ./setup.sh
+apt update && apt install curl sudo git -y && curl -Of https://raw.githubusercontent.com/DigneZzZ/dwg-ui/main/setup.sh && chmod +x setup.sh && ./setup.sh
 ```
 
 ## Что установится:
