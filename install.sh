@@ -105,14 +105,14 @@ else
 fi
 
 # Проверка актуальности версии docker-compose
-LATEST_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep "tag_name" | cut -d\" -f4)
-INSTALLED_VERSION=$(docker-compose version --short 2>/dev/null)
-
-if [ "$LATEST_VERSION" = "$INSTALLED_VERSION" ]; then
-    printf "Установленная версия Docker Compose (%s) является актуальной\n" "$INSTALLED_VERSION"
-else
-    printf "Установленная версия Docker Compose (%s) не является актуальной. Последняя версия: %s\n" "$INSTALLED_VERSION" "$LATEST_VERSION"
-fi
+#LATEST_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep "tag_name" | cut -d\" -f4)
+#INSTALLED_VERSION=$(docker-compose version --short 2>/dev/null)
+#
+#if [ "$LATEST_VERSION" = "$INSTALLED_VERSION" ]; then
+#    printf "Установленная версия Docker Compose (%s) является актуальной\n" "$INSTALLED_VERSION"
+#else
+#    printf "Установленная версия Docker Compose (%s) не является актуальной. Последняя версия: %s\n" "$INSTALLED_VERSION" "$LATEST_VERSION"
+#fi
 
 
 # Устанавливаем редактор Nano
