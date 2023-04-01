@@ -12,8 +12,8 @@ apt install git -y
 printf "\e[42mGit успешно установлен.\e[0m\n"
 
 # Клонирование репозитория
-printf "\e[42mКлонирование репозитория ad-wireguard...\e[0m\n"
-git clone https://github.com/dignezzz/ad-wireguard.git temp
+printf "\e[42mКлонирование репозитория dwg-ui...\e[0m\n"
+git clone https://github.com/dignezzz/dwg-ui.git temp
 
 if [ ! -d "dwg-ui" ]; then
   mkdir dwg-ui
