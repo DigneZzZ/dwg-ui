@@ -1,6 +1,6 @@
 # English version
 
-# Ad-WireGuard with UI = AdGuard with DoH DNS +  Wireguard with UI (wg-easy) + Unbound
+# DWG-UI = AdGuard with DoH DNS +  Wireguard with UI (wg-easy) + Unbound
 Combination WireGuard (wg-easy latest) + Adguard Home + Unbound (Latest)
 
 Here is the start of combination
@@ -18,11 +18,7 @@ Recomendation VPS Hosting with 10% Discount: 	[VDSina.ru](https://vdsina.ru/?par
 1. Clone the git and edit install-script
 ## CLEAR SERVER:
 ```bash
-apt update && apt install git -y && git clone https://github.com/dignezzz/ad-wireguard.git && cd ad-wireguard && chmod +x install.sh && ./install.sh && cd 
-```
-## INSTALL Docker, Docker-Compose and Ad-WireGuard
-```bash
-git clone https://github.com/dignezzz/ad-wireguard.git && cd ad-wireguard && chmod +x install.sh && ./install.sh && cd 
+apt update && apt install curl sudo git -y && curl -Of https://raw.githubusercontent.com/DigneZzZ/dwg-ui/main/setup.sh && chmod +x setup.sh && ./setup.sh
 ```
 
 ## Autors:
@@ -30,10 +26,6 @@ git clone https://github.com/dignezzz/ad-wireguard.git && cd ad-wireguard && chm
 👤 ** Alexey **
 * Git: [DigneZzZ](https://github.com/DigneZzZ)
 * Site: [OpeNode.RU](https://openode.ru)
-
-👤 ** Dmitriy **
-* Git [Nubortg](https://github.com/nubortg)
-
 
 ## Wireguard-Easy Web-UI
 ![image](https://user-images.githubusercontent.com/50312583/206703310-3bc8f759-91fa-42db-8d43-eca0050c70bf.png)
