@@ -2,6 +2,9 @@
 ### Представляю вам лучшую сборку для самой быстрой настройки VPN сервера на WireGuard
 ### **DWG-UI** = AdGuard with DoH DNS +  Wireguard with UI (wg-easy) + Unbound 
 
+Тема поддержки на моём форуме:
+https://openode.ru/topic/116-dwg-ui/
+
 Версия без UI: https://github.com/DigneZzZ/dwg-cli
 ### [ENGLISH DOCS](https://github.com/DigneZzZ/dwg-ui/blob/main/README_EN.md)
 
