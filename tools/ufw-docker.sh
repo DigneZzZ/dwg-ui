@@ -16,10 +16,10 @@ fi
 echo "UFW установлен. Продолжаем работу..."
 
 # Проверяем наличие клиентов в файле ~/ad-wireguard/wg0.conf
-if grep -q "^\[Peer\]" ~/ad-wireguard/wg0.conf; then
-  printf "${GREEN}В файле ~/ad-wireguard/wg0.conf есть клиенты. Можно продолжать работу.${NC}\n"
+if grep -q "^\[Peer\]" ~/dwg-ui/wg0.conf; then
+  printf "${GREEN}В файле ~/dwg-ui/wg0.conf есть клиенты. Можно продолжать работу.${NC}\n"
 else
-  printf "${BG_RED}В файле ~/ad-wireguard/wg0.conf нет клиентов. Нельзя продолжать работу.${NC}\n"
+  printf "${BG_RED}В файле ~/dwg-ui/wg0.conf нет клиентов. Нельзя продолжать работу.${NC}\n"
   printf "${BG_RED}Если бы вы сейчас установили ufw-docker, вы не смогли бы подключиться к WireGuard!${NC}\n"
   printf "${BG_RED}Создайте Peer'a и повторите заново!${NC}\n"
   printf "${BG_RED}Если скрипт отработал не правильно, напишите мне на форуме: http://openode.ru${NC}\n"
