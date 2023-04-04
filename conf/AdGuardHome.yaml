@@ -75,9 +75,9 @@ dns:
   parental_cache_size: 1048576
   cache_time: 30
   rewrites:
-    - domain: wg.local
+    - domain: wg.home
       answer: 10.2.0.3
-    - domain: agh.local
+    - domain: agh.home
       answer: 10.2.0.100
   blocked_services: []
   upstream_timeout: 10s
@@ -115,31 +115,31 @@ statistics:
   interval: 30
   ignored: []
 filters:
-  - enabled: true
+  - enabled: false
     url: https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt
     name: AdGuard DNS filter
     id: 1
-  - enabled: true
+  - enabled: false
     url: https://adaway.org/hosts.txt
     name: AdAway Default Blocklist
     id: 2
-  - enabled: true
+  - enabled: false
     url: https://easylist-downloads.adblockplus.org/advblock.txt
     name: RuAdlist
     id: 1670584470
-  - enabled: true
+  - enabled: false
     url: https://easylist-downloads.adblockplus.org/bitblock.txt
     name: BitBlock
     id: 1670584471
-  - enabled: true
+  - enabled: false
     url: https://easylist-downloads.adblockplus.org/cntblock.txt
     name: cntblock
     id: 1670584472
-  - enabled: true
+  - enabled: false
     url: https://easylist-downloads.adblockplus.org/easylist.txt
     name: easyList
     id: 1670584473
-  - enabled: true
+  - enabled: false
     url: https://schakal.ru/hosts/alive_hosts_ru_com.txt
     name: то же без неотвечающих хостов и доменов вне зон RU, NET и COM
     id: 1677533164
