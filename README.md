@@ -100,3 +100,7 @@ https://adguard-dns.io/kb/general/dns-providers/#cloudflare-dns
 * DNS Perfomance list:
 https://www.dnsperf.com/#!dns-resolvers
 
+# Почему именно AdGuardHome, а не PiHole?
+![image](https://user-images.githubusercontent.com/50312583/229718610-cfa5dc9b-08a6-4761-b8e7-f54315afab57.png)
+
+
