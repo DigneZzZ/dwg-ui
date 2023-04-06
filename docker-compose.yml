@@ -43,7 +43,7 @@ services:
 
   adguardhome:
     depends_on: [unbound]
-    image: adguard/adguardhome
+    image: adguard/adguardhome:v0.107.26
     container_name: adguardhome
     restart: unless-stopped
     environment:
