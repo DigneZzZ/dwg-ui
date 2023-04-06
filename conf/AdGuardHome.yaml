@@ -75,9 +75,9 @@ dns:
   parental_cache_size: 1048576
   cache_time: 30
   rewrites:
-    - domain: wg.home
+    - domain: wg.local
       answer: 10.2.0.3
-    - domain: agh.home
+    - domain: agh.local
       answer: 10.2.0.100
   blocked_services: []
   upstream_timeout: 10s
