@@ -19,6 +19,7 @@ services:
       - WG_PORT=51820
       - WG_DEFAULT_ADDRESS=10.10.10.x
       - WG_DEFAULT_DNS=10.2.0.100
+      - WG_ALLOWED_IPS=10.2.0.0/24, 0.0.0.0/0, ::/0
       - WG_MTU=1280
     image: ditek/wg-easy
     container_name: wg-easy
