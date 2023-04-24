@@ -296,7 +296,7 @@ echo -e "Адрес входа в веб-интерфейс WireGuard после
 echo -e "Адрес входа после настройки UFW-Docker, для подключения к Wireguard: ${BLUE}http://wg.home:51821${NC}"
 echo -e "Пароль от веб-интерфейса: ${BLUE}$CURRENT_PASSWORD${NC}"
 echo ""
-echo -e "Адрес входа в веб-интерфейс AdGuardHome после установки (только когда подключитесь к сети WireGuard!!!): ${BLUE}http://agh.home${NC}"
+echo -e "Адрес входа в веб-интерфейс AdGuardHome после установки (только когда подключитесь к сети WireGuard!!!): ${BLUE}http://agh.local${NC}"
 echo "Ниже представлены логин и пароль для входа в AdGuardHome"
 echo -e "Логин:${BLUE} $username${NC}"
 echo -e "Пароль:${BLUE} $password${NC}"
