@@ -59,6 +59,15 @@ printf "\e[42mЗапуск скрипта ufw.sh для установки UFW F
 ./tools/ufw.sh
 printf "\e[42mСкрипт ufw.sh успешно выполнен.\e[0m\n"
 
+printf "Хотите запустить скрипт wg-ru.sh для русификации и модернизации интерфейса?? (Y/n) (по умолчанию - Y, можете нажать Enter): "
+read choice_ru
+
+if [[ $choice_ru == "" || $choice_ru == "Y" || $choice_ru == "y" ]]; then
+  ./tools/wg-ru.sh
+else
+  printf "Скрипт не будет запущен.\n"
+fi
+
 # Переходим в папку /
 printf "\e[42mПереходим в папку /root/...\e[0m\n"
 cd
