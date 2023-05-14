@@ -23,7 +23,7 @@ for file_path in "${files[@]}"; do
     if grep -q "$file_search_string" "$file_path"; then
         echo "File $file_path already contains the meta information."
     else
-        ip_address=$(curl -s https://ipapi.co/ip) 
+        ip_address=$(curl -s https://checkip.amazonaws.com/) 
         if [ -z "$ip_address" ]; then
             echo "Error: could not retrieve IP address."
             exit 1
