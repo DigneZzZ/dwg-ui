@@ -1,41 +1,68 @@
 #!/bin/bash
 
-root_dir="/var/lib/docker/overlay2" # путь к корневой директории
-target_dir="diff/app/www" # целевая директория
-target_file="index.html" # целевой файл
-meta_info="openode_ru_changed" # имя мета-информации
+root_dir="/var/lib/docker/overlay2"
+target_dir="diff/app/www"
+target_file="index.html"
+meta_info="openode_ru_changed"
+file_search_string="<meta name=\"$meta_info\">"
+docker_container="wg-easy"
 
-for file_path in $(find $root_dir -type f -name $target_file -path "*/$target_dir/*"); do
-    if grep -q "<meta name=\"$meta_info\">" "$file_path"; then # проверяем, есть ли мета-информация в файле
+function check_file() {
+    if [ ! -f "$1" ]; then
+        echo "Error: file $1 not found."
+        exit 1
+    fi
+}
+
+function check_docker_result() {
+    if ! "$1"; then
+        echo "Error: could not $2 Docker container."
+        exit 1
+    fi
+}
+
+mapfile -t files < <(find "$root_dir" -type f -name "$target_file" -path "*/$target_dir/*")
+
+for file_path in "${files[@]}"; do
+    if grep -q "$file_search_string" "$file_path"; then
         echo "File $file_path already contains the meta information."
     else
-        ip_address=$(curl -s https://checkip.amazonaws.com/) # получаем IP-адрес
-        country=$(curl -s https://ipinfo.io/country/) # получаем страну
-        # заменяем строку <title>WireGuard</title> на <title>WireGuard сервер - Адрес: $ip_address Страна: $country</title>
-        sed -i -e "s/<title>WireGuard<\/title>/<title>WireGuard сервер - Адрес: $ip_address Страна: $country<\/title>/g" "$file_path"
-        echo "Title в файле $target_file изменен. Добавлен IP адрес и Страна"
-        # заменяем строку <span class="align-middle">WireGuard</span> на <span class="align-middle">WireGuard сервер - Адрес: $ip_address Страна: $country</span>
-        sed -i -e "s/<span class=\"align-middle\">WireGuard<\/span>/<span class=\"align-middle\">WireGuard сервер - Адрес: $ip_address Страна: $country<\/span>/g" "$file_path"
-        echo "Содержимое <span class=\"align-middle\"> в файле $target_file изменено."
-        # заменяем строку <p class="text-2xl font-medium">Clients</p> на <p class="text-2xl font-medium">Клиенты</p>
-        sed -i -e "s/<p class=\"text-4xl font-medium\">Clients<\/p>/<p class=\"text-2xl font-medium\">Клиенты<\/p>/g" "$file_path"
-        echo "Содержимое <p class=\"text-2xl font-medium\"> в файле $target_file изменено."
-        # заменяем строку <span class="text-sm">New</span> на <span class="text-sm">Новый клиент</span>
-        sed -i -e "s/<span class=\"text-sm\">New<\/span>/<span class=\"text-sm\">Новый клиент<\/span>/g" "$file_path"
-        echo "Содержимое <span class=\"text-sm\"> в файле $target_file изменено."
-        # заменяем строку <span v-if="requiresPassword" class="text-sm text-gray-400 mb-10 mr-2 mt-3 cursor-pointer hover:underline float-right" @click="logout">Logout
-        # на <span v-if="requiresPassword" class="text-sm text-gray-400 mb-10 mr-2 mt-3 cursor-pointer hover:underline float-right" @click="logout">Выйти
-        sed -i -e "s/<span v-if=\"requiresPassword\"\n          class=\"text-sm text-gray-400 mb-10 mr-2 mt-3 cursor-pointer hover:underline float-right\" @click=\"logout\">\n          Logout/<span v-if=\"requiresPassword\"\n          class=\"text-sm text-gray-400 mb-10 mr-2 mt-3 cursor-pointer hover:underline float-right\" @click=\"logout\">\n          Выйти/g" "$file_path"
-        echo "Содержимое <span v-if=\"requiresPassword\"> в файле $target_file изменено."
-        # добавляем мета-информацию перед тегом <head>
-        sed -i -e "/<head>/a <meta name=\"$meta_info\">" "$file_path"
-        echo "Мета-информация добавлена в файл $target_file."
-        
-        sed -i -e "s#<p v-cloak class=\"text-center m-10 text-gray-300 text-xs\">Made by <a target=\"blank\" class=\"hover:underline\"\n        href=\"https://emilenijssen.nl/\?ref=wg-easy\">Emile Nijssen</a> · <a class=\"hover:underline\"\n        href=\"https://github.com/sponsors/WeeJeWel\" target=\"blank\">Donate</a> · <a class=\"hover:underline\"\n        href=\"https://github.com/weejewel/wg-easy\" target=\"blank\">GitHub</a></p>#<p v-cloak class=\"text-center m-10 text-gray-300 text-xs\">Made by <a target=\"blank\" class=\"hover:underline\"\n        href=\"https://emilenijssen.nl/\?ref=wg-easy\">Emile Nijssen</a> · <a class=\"hover:underline\"\n        href=\"https://yoomoney.ru/to/41001707910216\" target=\"blank\">Donate for OpeNode.ru</a> · <a class=\"hover:underline\"\n        href=\"https://github.com/weejewel/wg-easy\" target=\"blank\">GitHub</a> ··· <a class=\"hover:underline\"\n        href=\"https://openode.ru\" target=\"blank\">Russian by OpeNode.RU</a> </p>#g" "$filepath"
-        # перезапускаем контейнер wg-easy
-        docker stop wg-easy 
-        docker start wg-easy 
-        echo "Улучшение главной страницы WG-easy завершено. Немного добавлен русский перевод."
+        ip_address=$(curl -s https://checkip.amazonaws.com/) 
+        if [ -z "$ip_address" ]; then
+            echo "Error: could not retrieve IP address."
+            exit 1
+        fi
+        country=$(curl -s https://ipinfo.io/country/)
+        if [ -z "$country" ]; then
+            echo "Error: could not retrieve country."
+            exit 1
+        fi
+        check_file "$file_path"
+        awk -v ip="$ip_address" -v country="$country" '
+          /<title>WireGuard<\/title>/{
+            gsub(/<title>WireGuard<\/title>/, "<title>WireGuard сервер - Адрес: "ip" Страна: "country"<\/title>")
+          }
+          /<span class=\\"align-middle\\">WireGuard<\/span>/{
+            gsub(/<span class=\\\"align-middle\\\">WireGuard<\/span>/, "<span class=\\"align-middle\\">WireGuard сервер - Адрес: "ip" Страна: "country"<\/span>")
+          }
+          /<p class=\\"text-4xl font-medium\\">Clients<\/p>/{
+            gsub(/<p class=\\"text-4xl font-medium\\">Clients<\/p>/, "<p class=\\"text-2xl font-medium\\">Клиенты<\/p>")
+          }
+          /<span class=\\"text-sm\\">New<\/span>/{
+            gsub(/<span class=\\"text-sm\\">New<\/span>/, "<span class=\\"text-sm\\">Новый клиент<\/span>")
+          }
+          !/<head>/{
+            print
+            next
+          }
+          {
+            print "<head>\n<meta name=\\""meta_info"\\">\n"$0
+          }
+        ' "$file_path" > "$file_path".tmp && mv "$file_path".tmp "$file_path"
+
+        check_docker_result "docker stop $docker_container" "stop"
+        check_docker_result "docker start $docker_container" "start"
     fi
 done
 
+echo "Script completed successfully."
