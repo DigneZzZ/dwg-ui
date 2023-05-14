@@ -6,6 +6,8 @@ target_file="index.html"
 meta_info="openode_ru_changed"
 file_search_string="<meta name=\"$meta_info\">"
 docker_container="wg-easy"
+add_meta_info="y"
+title="<title>WireGuard сервер. Адрес: $ip_address Страна: $country</title>"
 
 function check_file() {
     if [ ! -f "$1" ]; then
@@ -27,23 +29,24 @@ for file_path in "${files[@]}"; do
     if grep -q "$file_search_string" "$file_path"; then
         echo "File $file_path already contains the meta information."
     else
-        ip_address=$(curl -s https://checkip.amazonaws.com/) 
+        ip_address=$(curl -s https://ipapi.co/ip) 
         if [ -z "$ip_address" ]; then
             echo "Error: could not retrieve IP address."
             exit 1
         fi
-        country=$(curl -s https://ipinfo.io/country/)
+        country_f=$(curl -s curl -s https://ipapi.co/country_name)
+        country=$(curl -s curl -s https://ipapi.co/country_code_iso3)
         if [ -z "$country" ]; then
             echo "Error: could not retrieve country."
             exit 1
         fi
         check_file "$file_path"
-        awk -v ip="$ip_address" -v country="$country" '
+        awk -v title="$title" -v ip_address="$ip_address" -v country="$country" -v country_f="$country_f" '
           /<title>WireGuard<\/title>/{
-            gsub(/<title>WireGuard<\/title>/, "<title>WireGuard сервер - Адрес: "ip" Страна: "country"<\/title>")
+            gsub(/<title>WireGuard<\/title>/, title)
           }
           /<span class=\\"align-middle\\">WireGuard<\/span>/{
-            gsub(/<span class=\\\"align-middle\\\">WireGuard<\/span>/, "<span class=\\"align-middle\\">WireGuard сервер - Адрес: "ip" Страна: "country"<\/span>")
+            gsub(/<span class=\\\"align-middle\\\">WireGuard<\/span>/, "<span class=\\"align-middle\\">Адрес: "ip_address" Страна: "country_f"<\/span>")
           }
           /<p class=\\"text-4xl font-medium\\">Clients<\/p>/{
             gsub(/<p class=\\"text-4xl font-medium\\">Clients<\/p>/, "<p class=\\"text-2xl font-medium\\">Клиенты<\/p>")
