@@ -44,6 +44,7 @@ for file_path in "${files[@]}"; do
         sed -i 's#https://github.com/sponsors/WeeJeWel#https://yoomoney.ru/to/41001707910216#g' "$file_path"
         sed -i 's#href="https://github.com/weejewel/wg-easy" target="_blank">GitHub#href="https://openode.ru" target="_blank">ReCreated by OpeNode.ru#g' "$file_path"
         sed -i 's#v-cloak class="text-center m-10 text-gray-300 text-xs"#v-cloak class="text-center m-10 text-gray-600 text-xs"#g' "$file_path"
+        sed -i 's|h1 class="text-4xl font-medium mt-10 mb-2"|h1 class="text-2xl font-medium mt-10 mb-2"|g' "$file_path"
         # Добавляем мета-информацию
         sed -i "1s|^|<head>\n<meta name=\\"$meta_info\\">\n|" "$file_path"
 
