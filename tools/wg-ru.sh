@@ -16,12 +16,6 @@ function check_file() {
     fi
 }
 
-function check_docker_result() {
-    if ! "$1"; then
-        echo "Error: could not $2 Docker container."
-        exit 1
-    fi
-}
 
 mapfile -t files < <(find "$root_dir" -type f -name "$target_file" -path "*/$target_dir/*")
 
@@ -54,8 +48,8 @@ for file_path in "${files[@]}"; do
         sed -i "1s|^|<head>\n<meta name=\\"$meta_info\\">\n|" "$file_path"
 
 
-        check_docker_result "docker stop $docker_container" "stop"
-        check_docker_result "docker start $docker_container" "start"
+       docker stop $docker_container
+       docker start $docker_container
     fi
 done
 
