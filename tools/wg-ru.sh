@@ -41,27 +41,17 @@ for file_path in "${files[@]}"; do
             exit 1
         fi
         check_file "$file_path"
-        awk -v title="$title" -v ip_address="$ip_address" -v country="$country" -v country_f="$country_f" '
-          /<title>WireGuard<\/title>/{
-            gsub(/<title>WireGuard<\/title>/, title)
-          }
-          /<span class=\\"align-middle\\">WireGuard<\/span>/{
-            gsub(/<span class=\\\"align-middle\\\">WireGuard<\/span>/, "<span class=\\"align-middle\\">Адрес: "ip_address" Страна: "country_f"<\/span>")
-          }
-          /<p class=\\"text-4xl font-medium\\">Clients<\/p>/{
-            gsub(/<p class=\\"text-4xl font-medium\\">Clients<\/p>/, "<p class=\\"text-2xl font-medium\\">Клиенты<\/p>")
-          }
-          /<span class=\\"text-sm\\">New<\/span>/{
-            gsub(/<span class=\\"text-sm\\">New<\/span>/, "<span class=\\"text-sm\\">Новый клиент<\/span>")
-          }
-          !/<head>/{
-            print
-            next
-          }
-          {
-            print "<head>\n<meta name=\\""meta_info"\\">\n"$0
-          }
-        ' "$file_path" > "$file_path".tmp && mv "$file_path".tmp "$file_path"
+        
+        # Заменяем текст с помощью команды sed
+        sed -i "s/<title>[^<]*<\/title>/$title/" "$file_path"
+        sed -i "s/<span class=\\"align-middle\\">WireGuard<\/span>/<span class=\\"align-middle\\">WireGuard: Адрес: $ip_address Страна: $country_f<\/span>/" "$file_path"
+        sed -i "s/>Clients</>Клиенты</" "$file_path"
+        sed -i "s/>New</>Новый клиент</" "$file_path"
+        sed -i 's#https://github.com/sponsors/WeeJeWel#https://yoomoney.ru/to/41001707910216#g' "$file_path"
+        sed -i 's#href="https://github.com/weejewel/wg-easy" target="_blank">GitHub#href="https://openode.ru" target="_blank">ReCreated by OpeNode.ru#g' "$file_path"
+        sed -i 's#v-cloak class="text-center m-10 text-gray-300 text-xs"#v-cloak class="text-center m-10 text-gray-600 text-xs"#g' "$file_path"
+        # Добавляем мета-информацию
+        sed -i "1s/^/<head>\n<meta name=\\"$meta_info\\">\n/" "$file_path"
 
         check_docker_result "docker stop $docker_container" "stop"
         check_docker_result "docker start $docker_container" "start"
