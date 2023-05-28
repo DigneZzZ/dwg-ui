@@ -38,7 +38,7 @@ for file_path in "${files[@]}"; do
         
         # Заменяем текст с помощью команды sed
         sed -i "s|<title>[^<]*<\/title>|<title>WireGuard :: Адрес: $ip_address Страна: $country<\/title>|" "$file_path"
-        sed -i "s|<span class=\\"align-middle\\">WireGuard<\/span>|<span class=\\"align-middle\\">WireGuard: Адрес: $ip_address Страна: $country_f<\/span>|" "$file_path"
+        sed -i "s|>WireGuard<\/span>|>WireGuard: Адрес: $ip_address Страна: $country_f<\/span>|" "$file_path"
         sed -i "s|>Clients<|>Клиенты<|" "$file_path"
         sed -i "s|>New<|>Новый клиент<|" "$file_path"
         sed -i 's#https://github.com/sponsors/WeeJeWel#https://yoomoney.ru/to/41001707910216#g' "$file_path"
