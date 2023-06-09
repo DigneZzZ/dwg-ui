@@ -41,7 +41,7 @@ https://openode.ru/topic/116-dwg-ui/
 Запусти команду на чистом сервере
 
 ```bash
-apt update && apt install curl sudo git -y && curl -Of https://raw.githubusercontent.com/DigneZzZ/dwg-ui/main/setup.sh && chmod +x setup.sh && ./setup.sh
+bash <(wget -qO- https://raw.githubusercontent.com/DigneZzZ/dwg-ui/main/setup.sh)
 ```
 
 ## Что установится:
