@@ -11,6 +11,11 @@ printf "\e[42mУстановка Git...\e[0m\n"
 apt install git -y
 printf "\e[42mGit успешно установлен.\e[0m\n"
 
+# Установка Git
+printf "\e[42mУстановка SUDO...\e[0m\n"
+apt install sudo -y
+printf "\e[42mSUDO успешно установлен.\e[0m\n"
+
 # Клонирование репозитория
 printf "\e[42mКлонирование репозитория dwg-ui...\e[0m\n"
 git clone https://github.com/dignezzz/dwg-ui.git temp
