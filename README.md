@@ -7,7 +7,7 @@ https://openode.ru/topic/116-dwg-ui/
 
 Версия без UI: https://github.com/DigneZzZ/dwg-cli
 
-Универсальный установщик выбор UI / без UI: https://github.com/DigneZzZ/dwg/
+# Основная ветка развития будет здесь: Универсальный установщик выбор UI / без UI: https://github.com/DigneZzZ/dwg/
 
 ### UPD 05.05.23:  Добавил файл `./change.sh` чтобы можно было менять пароль и логин к AGH.
 
