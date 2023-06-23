@@ -28,8 +28,8 @@ for file_path in "${files[@]}"; do
             echo "Error: could not retrieve IP address."
             exit 1
         fi
-        country_f=$(curl -s curl -s https://ipapi.co/country_name)
-        country=$(curl -s curl -s https://ipapi.co/country_code_iso3)
+        country_f=$(curl -s https://ipapi.co/country_name)
+        country=$(curl -s https://ipapi.co/country_code_iso3)
         if [ -z "$country" ]; then
             echo "Error: could not retrieve country."
             exit 1
