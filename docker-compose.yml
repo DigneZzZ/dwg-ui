@@ -53,6 +53,9 @@ services:
     volumes:
       - ./work:/opt/adguardhome/work
       - ./conf:/opt/adguardhome/conf
+    ports:  
+     # - '53:53'           # AdGuardHome DNS Port
+     # - '853:853'         # DNS-TLS
     networks:
       private_network:
         ipv4_address: 10.2.0.100
