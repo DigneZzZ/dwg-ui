@@ -53,7 +53,7 @@ services:
     volumes:
       - ./work:/opt/adguardhome/work
       - ./conf:/opt/adguardhome/conf
-    ports:  
+    #ports:  
      # - '53:53'           # AdGuardHome DNS Port
      # - '853:853'         # DNS-TLS
     networks:
