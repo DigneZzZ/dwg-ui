@@ -1,6 +1,9 @@
-bind_host: 0.0.0.0
-bind_port: 80
-beta_bind_port: 0
+http:
+  pprof:
+    port: 6060
+    enabled: false
+  address: 0.0.0.0:80
+  session_ttl: 720h
 users:
   - name: admin
     password: $2y$10$G7Qu8Y3szepMfaRUyQ.FmuKR.n4U9dHOQm.GgrIMuYC9UP8vmHJri
@@ -9,35 +12,23 @@ block_auth_min: 15
 http_proxy: ""
 language: ""
 theme: auto
-debug_pprof: false
-web_session_ttl: 720
 dns:
   bind_hosts:
     - 0.0.0.0
   port: 53
   anonymize_client_ip: false
-  protection_enabled: true
-  blocking_mode: default
-  blocking_ipv4: ""
-  blocking_ipv6: ""
-  blocked_response_ttl: 10
-  parental_block_host: family-block.dns.adguard.com
-  safebrowsing_block_host: standard-block.dns.adguard.com
   ratelimit: 20
   ratelimit_whitelist: []
   refuse_any: true
   upstream_dns:
-    - '#Default Cloudlfare DNS:'
     - https://cloudflare-dns.com/dns-query
-    - '#Adguard DNS:These servers block ads, tracking, and phishing'
     - https://dns.adguard-dns.com/dns-query
-    - '#New increase protocol of Adguard Home DNS-over-QUIC, with the same block settings.'
-    - quic://dns.adguard-dns.com
-    - '#Quad9 Regular DNS servers which provide protection from phishing and spyware. They include blocklists, DNSSEC validation, and other security features.'
-    - https://dns.quad9.net/dns-query
   upstream_dns_file: ""
   bootstrap_dns:
     - 10.2.0.200
+  fallback_dns:
+    - https://dns.quad9.net/dns-query
+    - quic://unfiltered.adguard-dns.com
   all_servers: false
   fastest_addr: false
   fastest_timeout: 1s
@@ -56,30 +47,16 @@ dns:
   cache_optimistic: false
   bogus_nxdomain: []
   aaaa_disabled: false
-  enable_dnssec: true
+  enable_dnssec: false
   edns_client_subnet:
     custom_ip: ""
-    enabled: true
+    enabled: false
     use_custom: false
   max_goroutines: 300
   handle_ddr: true
   ipset: []
   ipset_file: ""
-  filtering_enabled: true
-  filters_update_interval: 168
-  parental_enabled: false
-  safesearch_enabled: false
-  safebrowsing_enabled: false
-  safebrowsing_cache_size: 1048576
-  safesearch_cache_size: 1048576
-  parental_cache_size: 1048576
-  cache_time: 30
-  rewrites:
-    - domain: wg.local
-      answer: 10.2.0.3
-    - domain: agh.local
-      answer: 10.2.0.100
-  blocked_services: []
+  bootstrap_prefer_ipv6: false
   upstream_timeout: 10s
   private_networks: []
   use_private_ptr_resolvers: true
@@ -105,15 +82,15 @@ tls:
   private_key_path: ""
   strict_sni_check: false
 querylog:
+  ignored: []
+  interval: 24h
+  size_memory: 1000
   enabled: true
   file_enabled: true
-  interval: 720h
-  size_memory: 1000
-  ignored: []
 statistics:
-  enabled: true
-  interval: 30
   ignored: []
+  interval: 24h
+  enabled: true
 filters:
   - enabled: false
     url: https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt
@@ -166,6 +143,36 @@ dhcp:
     lease_duration: 86400
     ra_slaac_only: false
     ra_allow_slaac: false
+filtering:
+  blocking_ipv4: ""
+  blocking_ipv6: ""
+  blocked_services:
+    schedule:
+      time_zone: America/Los_Angeles
+    ids: []
+  protection_disabled_until: null
+  safe_search:
+    enabled: false
+    bing: true
+    duckduckgo: true
+    google: true
+    pixabay: true
+    yandex: true
+    youtube: true
+  blocking_mode: default
+  parental_block_host: family-block.dns.adguard.com
+  safebrowsing_block_host: standard-block.dns.adguard.com
+  rewrites: []
+  safebrowsing_cache_size: 1048576
+  safesearch_cache_size: 1048576
+  parental_cache_size: 1048576
+  cache_time: 30
+  filters_update_interval: 24
+  blocked_response_ttl: 10
+  filtering_enabled: true
+  parental_enabled: false
+  safebrowsing_enabled: false
+  protection_enabled: true
 clients:
   runtime_sources:
     whois: true
@@ -174,15 +181,16 @@ clients:
     dhcp: true
     hosts: true
   persistent: []
-log_file: ""
-log_max_backups: 0
-log_max_size: 100
-log_max_age: 3
-log_compress: false
-log_localtime: false
-verbose: false
+log:
+  file: ""
+  max_backups: 0
+  max_size: 100
+  max_age: 3
+  compress: false
+  local_time: false
+  verbose: false
 os:
   group: ""
   user: ""
   rlimit_nofile: 0
-schema_version: 17
+schema_version: 27  
