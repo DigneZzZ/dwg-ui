@@ -23,7 +23,7 @@ services:
       - WG_PERSISTENT_KEEPALIVE=25
       - WG_MTU=1280
     #image: ditek/wg-easy
-    image: ghcr.io/wg-easy/wg-easy
+    image: ghcr.io/wg-easy/wg-easy:12
     container_name: wg-easy
     volumes:
       - .:/etc/wireguard
